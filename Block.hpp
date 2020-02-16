@@ -1,0 +1,33 @@
+#ifndef TETRUINO_BLOCK_HPP
+#define TETRUINO_BLOCK_HPP
+
+#include <PololuLedStrip.h>
+
+#include "Rotation.hpp"
+
+namespace Tetruino
+{
+	class Block
+	{
+		Block
+		(
+			unsigned char bounds,
+			bool baseShape[], Rotation baseRotation,
+			const rgb_color& colour
+		);
+		
+		const rgb_color colour;
+		const unsigned char bounds;
+		
+		constexpr const bool& getShape() const;
+		constexpr Rotation getRotation() const;
+		
+		void rotateLeft();
+		void rotateRight();
+	private:
+		Rotation rotation;
+		bool shape[];
+	};
+}
+
+#endif
