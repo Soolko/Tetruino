@@ -1,3 +1,5 @@
 #include <Arduino.h>
-void setup(){}
-void loop(){}
+#include "Main.hpp"
+
+void setup()	{ Tetruino::setup(); }
+void loop()		{ Tetruino::loop(); }
