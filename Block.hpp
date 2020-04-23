@@ -1,9 +1,8 @@
 #ifndef TETRUINO_BLOCK_HPP
 #define TETRUINO_BLOCK_HPP
 
-#include <PololuLedStrip.h>
-
 #include "Rotation.hpp"
+#include "Renderer.hpp"
 
 namespace Tetruino
 {
@@ -13,10 +12,10 @@ namespace Tetruino
 		(
 			unsigned char bounds,
 			bool baseShape[], Rotation baseRotation,
-			const rgb_color& colour
+			const Colour& colour
 		);
 		
-		const rgb_color colour;
+		const Colour& colour;
 		const unsigned char bounds;
 		
 		constexpr const bool& getShape() const;

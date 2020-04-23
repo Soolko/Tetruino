@@ -1,7 +1,8 @@
 #ifndef TETRUINO_WORLD_HPP
 #define TETRUINO_WORLD_HPP
 
-#include <FastLED.h>
+#include "Block.hpp"
+#include "Renderer.hpp"
 
 namespace Tetruino
 {
@@ -15,11 +16,14 @@ namespace Tetruino
 		const unsigned width, height;
 		const unsigned ledCount;
 		
-		// Actual world
-		typedef CRGB WorldPixel;
-		const WorldPixel BackgroundColour = WorldPixel { 0, 0, 0 };
-		
-		WorldPixel* world;
+		const Colour BackgroundColour = Colour { 0, 0, 0 };
+		Colour* world;
+	private:
+		const int xDefault = width / 2;
+		const int yDefault = 0;
+	protected:
+		const Block* currentBlock;
+		int x = xDefault, y = yDefault;
 	};
 }
 

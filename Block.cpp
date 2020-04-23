@@ -1,4 +1,5 @@
 #include "Block.hpp"
+#include "Renderer.hpp"
 
 using namespace Tetruino;
 
@@ -6,7 +7,7 @@ Block::Block
 (
 	unsigned char bounds,
 	bool baseShape[], Rotation baseRotation,
-	const rgb_color& colour
+	const Colour& colour
 ) :
 	bounds(bounds),
 	rotation(baseRotation),

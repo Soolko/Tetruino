@@ -12,6 +12,7 @@
 
 namespace Tetruino
 {
+	typedef CRGB Colour;
 	class Renderer
 	{
 	public:
@@ -20,6 +21,9 @@ namespace Tetruino
 		void loop();
 	protected:
 		const World& world;
+		
+		// Set pin here
+		constexpr uint8_t pin = 3;
 	};
 }
 
