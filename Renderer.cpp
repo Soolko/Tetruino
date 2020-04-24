@@ -3,14 +3,20 @@
 
 using namespace Tetruino;
 
+
 Renderer::Renderer(const World& world) : world(world)
 {
-	
+	buffer = new Colour[world.ledCount];
+}
+
+Renderer::~Renderer()
+{
+	delete[] buffer;
 }
 
 void Renderer::setup()
 {
-	FastLED.addLeds<NEOPIXEL, Renderer.pin>(world.world, world.ledCount);
+	FastLED.addLeds<NEOPIXEL, 3>(buffer, world.ledCount);
 }
 
 void Renderer::loop()

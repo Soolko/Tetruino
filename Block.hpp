@@ -2,7 +2,7 @@
 #define TETRUINO_BLOCK_HPP
 
 #include "Rotation.hpp"
-#include "Renderer.hpp"
+#include "Colour.hpp"
 
 namespace Tetruino
 {
