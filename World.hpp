@@ -2,23 +2,27 @@
 #define TETRUINO_WORLD_HPP
 
 #include "Block.hpp"
+#include "Renderer.hpp"
 #include "Colour.hpp"
+#include "Bounds.hpp"
 
 namespace Tetruino
 {
 	class World
 	{
 	public:
-		World(unsigned width, unsigned height);
+		World(const Bounds& bounds, const Renderer& renderer);
 		
 		// Getters
 		const Block* getCurrentBlock();
 		const Block* getNextBlock();
-		
-		// Bounds
-		const unsigned width, height;
-		const unsigned ledCount;
 	protected:
+		// Renderer object
+		const Renderer& renderer;
+		
+		// World bounds
+		const Bounds& bounds;
+		
 		// Current block
 		Block* currentBlock;
 		int x = xDefault, y = yDefault;
@@ -26,9 +30,7 @@ namespace Tetruino
 		// Next block
 		Block* nextBlock;
 	private:
-		bool* collisionMap;
-		
-		const int xDefault = width / 2;
+		const int xDefault = bounds.width / 2;
 		const int yDefault = 0;
 	};
 }

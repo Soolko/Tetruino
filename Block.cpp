@@ -6,19 +6,21 @@ using namespace Tetruino;
 Block::Block
 (
 	unsigned char bounds,
-	bool baseShape[], Rotation baseRotation,
+	const bool* baseShape, Rotation baseRotation,
 	const Colour& colour
 ) :
 	bounds(bounds),
 	rotation(baseRotation),
 	colour(colour)
 {
-	*shape = baseShape;
+	shape = new bool[bounds * bounds];
+	for(unsigned i = 0; i < bounds * bounds; i++) { shape[i] = baseShape[i]; }
 }
 
-// Getters
-const bool& Block::getShape() const { return *shape; }
-Rotation Block::getRotation() const { return rotation; }
+Block::~Block()
+{
+	delete[] shape;
+}
 
 // Translation/Rotation
 void Block::rotateLeft()

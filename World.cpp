@@ -3,7 +3,7 @@
 
 using namespace Tetruino;
 
-World::World(unsigned width, unsigned height) : width(width), height(height), ledCount(width * height)
+World::World(const Bounds& bounds, const Renderer& renderer) : bounds(bounds), renderer(renderer)
 {
 	
 }

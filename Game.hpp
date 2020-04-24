@@ -9,18 +9,11 @@ namespace Tetruino
 	class Game
 	{
 	public:
-		Game
-		(
-			// Render Settings
-			const unsigned width, const unsigned height
-		);
+		Game(const Bounds& bounds);
 		~Game();
 		
 		void setup();
 		void loop();
-		
-		World* world;
-		Renderer* renderer;
 	};
 }
 

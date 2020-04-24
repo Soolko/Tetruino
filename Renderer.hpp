@@ -2,7 +2,8 @@
 #define TETRUINO_RENDERER_HPP
 
 #include "Colour.hpp"
-#include "World.hpp"
+#include "Bounds.hpp"
+#include "Block.hpp"
 
 #ifndef LEDType
 #define LEDType NEOPIXEL
@@ -15,15 +16,16 @@ namespace Tetruino
 	class Renderer
 	{
 	public:
-		Renderer(const World& world);
+		Renderer(const Bounds& bounds);
 		~Renderer();
 		
 		void setup();
 		void loop();
 		
-		// World reference
-		const World& world;
+		void addBlock(const Block& block, int x, int y);
+		void clear();
 	protected:
+		const Bounds& bounds;
 		Colour* buffer;
 	};
 }

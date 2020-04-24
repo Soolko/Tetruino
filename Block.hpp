@@ -8,24 +8,25 @@ namespace Tetruino
 {
 	class Block
 	{
+	public:
 		Block
 		(
 			unsigned char bounds,
-			bool baseShape[], Rotation baseRotation,
+			const bool* baseShape, Rotation baseRotation,
 			const Colour& colour
 		);
+		~Block();
 		
 		const Colour& colour;
+		
+		// The width or height of the shape. Width == Height.
 		const unsigned char bounds;
 		
-		constexpr const bool& getShape() const;
-		constexpr Rotation getRotation() const;
+		bool* shape;
+		Rotation rotation;
 		
 		void rotateLeft();
 		void rotateRight();
-	private:
-		Rotation rotation;
-		bool shape[];
 	};
 }
 

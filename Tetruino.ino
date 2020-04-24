@@ -2,15 +2,31 @@
 #include <FastLED.h>
 
 #include "Game.hpp"
+#include "Bounds.hpp"
 
 using namespace Tetruino;
 
 // Constants
-constexpr unsigned Width = 32, Height = 8;
+constexpr Bounds bounds = { 8u, 32u };
 
 // Objects
-Game game(Width, Height);
+//Game game(bounds);
 
-// Arduino method pass-on
-void setup() { game.setup(); }
-void loop()  { game.loop(); }
+Renderer renderer(bounds);
+
+void setup()
+{
+	renderer.setup();
+	
+	bool blockShape[] = { true, true, true, true };
+	Colour blockColour = { 10, 10, 0 };
+	
+	Block block(2u, blockShape, Rotation::up, blockColour);
+	renderer.addBlock(block, 0, 0);
+}
+
+void loop()
+{
+	//game.loop();
+	renderer.loop();
+}
