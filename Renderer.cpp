@@ -5,7 +5,7 @@ using namespace Tetruino;
 
 // Set pin here
 constexpr uint8_t OutputPin = 3;
-#define FLIP_ODD
+#define FLIP_EVEN
 
 Renderer::Renderer(const Bounds& bounds) : bounds(bounds)
 {
@@ -16,6 +16,7 @@ Renderer::Renderer(const Bounds& bounds) : bounds(bounds)
 	 * to avoid the previous block before this was allocated being read.
 	 */
 	clear();
+	FastLED.addLeds<NEOPIXEL, 3>(buffer, bounds.getGridCount());
 }
 
 Renderer::~Renderer()
@@ -23,37 +24,32 @@ Renderer::~Renderer()
 	delete[] buffer;
 }
 
-void Renderer::setup()
-{
-	FastLED.addLeds<NEOPIXEL, 3>(buffer, bounds.getGridCount());
-}
-
-void Renderer::loop()
-{
-	FastLED.show();
-}
-
 void Renderer::addBlock(const Block& block, const int x, const int y)
 {
-	for(int shapeY = 0; shapeY < block.bounds; shapeY++)
+	for(unsigned int blockY = 0; blockY < block.bounds; blockY++)
+	for(unsigned int blockX = 0; blockX < block.bounds; blockX++)
 	{
-		for(int shapeX = 0; shapeX < block.bounds; shapeX++)
-		{
-			const int shapeIndex = shapeX + (shapeY * block.bounds);
-			if(block.shape[shapeIndex])
-			{
-				int bufferX = x + shapeX;
-				int bufferY = y + shapeY;
-				
-				#ifdef FLIP_ODD
-				if(bufferY % 2 == 1) bufferX = bounds.width - bufferX - 1;
-				#endif
-				
-				const int bufferIndex = bufferX + (bufferY * bounds.width);
-				if(bufferIndex >= 0) buffer[bufferIndex] = block.colour;
-			}
-		}
+		// Next iteration if block doesn't exist at this point
+		if(!block.shape[blockX + (blockY * block.bounds)]) continue;
+		
+		// Get final coord
+		const int bufferX = blockX + x;
+		const int bufferY = blockY + y;
+		
+		// Bounds checks
+		if(bufferX < 0 || bufferY < 0) continue;
+		if(bufferX >= bounds.width) continue;
+		if(bufferY >= bounds.height) continue;
+		
+		// Set buffer
+		buffer[bufferX + (bufferY * bounds.width)] = block.colour;
 	}
+}
+
+void Renderer::draw()
+{
+	flipBuffer();
+	FastLED.show();
 }
 
 void Renderer::clear()
@@ -62,5 +58,42 @@ void Renderer::clear()
 	{
 		// Set buffer to all black.
 		buffer[i] = Colour { 0, 0, 0 };
+	}
+}
+
+void Renderer::flipBuffer()
+{
+	#if !(defined(FLIP_EVEN) || defined(FLIP_ODD))
+	return;
+	#endif
+	
+	for(unsigned int y = 0; y < bounds.height; y++)
+	{
+		bool flip = false;
+		
+		#ifdef FLIP_EVEN
+		flip |= y % 2 == 0;
+		#endif
+		
+		#ifdef FLIP_ODD
+		flip |= y % 2 == 1;
+		#endif
+		
+		// If it doesn't need to flip, iterate to the next time
+		if(!flip) continue;
+		
+		// Copy line to new array flipped
+		Colour* row = new Colour[bounds.width];
+		for(unsigned int x = 0; x < bounds.width; x++)
+		{
+			row[bounds.width - x - 1] = buffer[x + (y * bounds.width)];
+		}
+		
+		// Copy back
+		for(unsigned int x = 0; x < bounds.width; x++)
+		{
+			buffer[x + (y * bounds.width)] = row[x];
+		}
+		delete[] row;
 	}
 }

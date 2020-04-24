@@ -19,14 +19,15 @@ namespace Tetruino
 		Renderer(const Bounds& bounds);
 		~Renderer();
 		
-		void setup();
-		void loop();
-		
 		void addBlock(const Block& block, int x, int y);
+		
+		void draw();
 		void clear();
 	protected:
 		const Bounds& bounds;
 		Colour* buffer;
+	private:
+		void flipBuffer();
 	};
 }
 

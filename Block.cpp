@@ -14,7 +14,7 @@ Block::Block
 	colour(colour)
 {
 	shape = new bool[bounds * bounds];
-	for(unsigned i = 0; i < bounds * bounds; i++) { shape[i] = baseShape[i]; }
+	copyArray(baseShape, shape);
 }
 
 Block::~Block()
@@ -27,9 +27,9 @@ void Block::rotateLeft()
 {
 	bool* output = new bool[bounds * bounds];
 	
-	for(unsigned int x = 0; x < bounds; x++)
+	for(unsigned char x = 0; x < bounds; x++)
 	{
-		for(unsigned int y = 0; y < bounds; y++)
+		for(unsigned char y = 0; y < bounds; y++)
 		{
 			const unsigned int newX = bounds - y - 1;
 			const unsigned int newY = x;
@@ -38,7 +38,7 @@ void Block::rotateLeft()
 		}
 	}
 	
-	*shape = *output;
+	copyArray(output, shape);
 	delete[] output;
 	
 	rotation = rotation.rotateLeft();
@@ -48,9 +48,9 @@ void Block::rotateRight()
 {
 	bool* output = new bool[bounds * bounds];
 	
-	for(unsigned int x = 0; x < bounds; x++)
+	for(unsigned char x = 0; x < bounds; x++)
 	{
-		for(unsigned int y = 0; y < bounds; y++)
+		for(unsigned char y = 0; y < bounds; y++)
 		{
 			const unsigned int newX = y;
 			const unsigned int newY = bounds - x - 1;
@@ -59,8 +59,13 @@ void Block::rotateRight()
 		}
 	}
 	
-	*shape = *output;
+	copyArray(output, shape);
 	delete[] output;
 	
 	rotation = rotation.rotateRight();
+}
+
+void Block::copyArray(const bool* source, bool* target)
+{
+	for(unsigned char i = 0; i < bounds * bounds; i++) target[i] = source[i];
 }

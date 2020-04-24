@@ -27,6 +27,8 @@ namespace Tetruino
 		
 		void rotateLeft();
 		void rotateRight();
+	private:
+		void copyArray(const bool* source, bool* target);
 	};
 }
 

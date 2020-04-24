@@ -14,19 +14,25 @@ constexpr Bounds bounds = { 8u, 32u };
 
 Renderer renderer(bounds);
 
+const bool blockShape[] = { true, true, false, true };
+const Colour blockColour = { 10, 20, 0 };
+Block block(2u, blockShape, Rotation::up, blockColour);
+
 void setup()
 {
-	renderer.setup();
 	
-	bool blockShape[] = { true, true, true, true };
-	Colour blockColour = { 10, 10, 0 };
-	
-	Block block(2u, blockShape, Rotation::up, blockColour);
-	renderer.addBlock(block, 0, 0);
 }
+
+int x = 0;
+int y = 0;
 
 void loop()
 {
-	//game.loop();
-	renderer.loop();
+	renderer.clear();
+	renderer.addBlock(block, x, y);
+	renderer.draw();
+	
+	delay(500);
+	if(++x >= bounds.width) x = 0;
+	if(++y >= bounds.height) y = 0;
 }
