@@ -3,6 +3,7 @@
 
 #include "Game.hpp"
 #include "Bounds.hpp"
+#include "Block.hpp"
 
 using namespace Tetruino;
 
@@ -14,25 +15,24 @@ constexpr Bounds bounds = { 8u, 32u };
 
 Renderer renderer(bounds);
 
-const bool blockShape[] = { true, true, false, true };
-const Colour blockColour = { 10, 20, 0 };
-Block block(2u, blockShape, Rotation::up, blockColour);
-
 void setup()
 {
-	
+	// Random pin
+	pinMode(A0, INPUT);
+	randomSeed(digitalRead(A0));
 }
 
-int x = 0;
-int y = 0;
+Block block = Blocks::rightZ;
 
 void loop()
 {
 	renderer.clear();
-	renderer.addBlock(block, x, y);
+	
+	renderer.drawBlock(block, 2, 2);
+	
 	renderer.draw();
 	
 	delay(500);
-	if(++x >= bounds.width) x = 0;
-	if(++y >= bounds.height) y = 0;
+	
+	block.rotateLeft();
 }

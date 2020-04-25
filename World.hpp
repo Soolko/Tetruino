@@ -18,10 +18,10 @@ namespace Tetruino
 		const Block* getNextBlock();
 	protected:
 		// Renderer object
-		const Renderer& renderer;
+		const Renderer* renderer;
 		
 		// World bounds
-		const Bounds& bounds;
+		const Bounds bounds;
 		
 		// Current block
 		Block* currentBlock;
@@ -32,6 +32,8 @@ namespace Tetruino
 	private:
 		const int xDefault = bounds.width / 2;
 		const int yDefault = 0;
+		
+		const Block* randomBlock();
 	};
 }
 

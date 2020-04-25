@@ -19,7 +19,7 @@ namespace Tetruino
 		Renderer(const Bounds& bounds);
 		~Renderer();
 		
-		void addBlock(const Block& block, int x, int y);
+		void drawBlock(const Block& block, int x, int y);
 		
 		void draw();
 		void clear();

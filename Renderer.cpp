@@ -24,10 +24,10 @@ Renderer::~Renderer()
 	delete[] buffer;
 }
 
-void Renderer::addBlock(const Block& block, const int x, const int y)
+void Renderer::drawBlock(const Block& block, const int x, const int y)
 {
-	for(unsigned int blockY = 0; blockY < block.bounds; blockY++)
-	for(unsigned int blockX = 0; blockX < block.bounds; blockX++)
+	for(unsigned char blockY = 0; blockY < block.bounds; blockY++)
+	for(unsigned char blockX = 0; blockX < block.bounds; blockX++)
 	{
 		// Next iteration if block doesn't exist at this point
 		if(!block.shape[blockX + (blockY * block.bounds)]) continue;
@@ -67,7 +67,7 @@ void Renderer::flipBuffer()
 	return;
 	#endif
 	
-	for(unsigned int y = 0; y < bounds.height; y++)
+	for(unsigned char y = 0; y < bounds.height; y++)
 	{
 		bool flip = false;
 		
@@ -84,13 +84,13 @@ void Renderer::flipBuffer()
 		
 		// Copy line to new array flipped
 		Colour* row = new Colour[bounds.width];
-		for(unsigned int x = 0; x < bounds.width; x++)
+		for(unsigned char x = 0; x < bounds.width; x++)
 		{
 			row[bounds.width - x - 1] = buffer[x + (y * bounds.width)];
 		}
 		
 		// Copy back
-		for(unsigned int x = 0; x < bounds.width; x++)
+		for(unsigned char x = 0; x < bounds.width; x++)
 		{
 			buffer[x + (y * bounds.width)] = row[x];
 		}
