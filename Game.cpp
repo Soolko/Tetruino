@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "Block.hpp"
 
 using namespace Tetruino;
 
@@ -16,7 +17,6 @@ Game::~Game()
 
 void Game::setup()
 {
-	
 }
 
 void Game::loop()

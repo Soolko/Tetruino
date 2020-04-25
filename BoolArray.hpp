@@ -20,7 +20,7 @@ namespace Tetruino
 	protected:
 		unsigned long size;
 		
-		unsigned char* arrayBytes;
+		uint8_t* arrayBytes;
 		unsigned int arrayBytesCount;
 	};
 }

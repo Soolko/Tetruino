@@ -7,12 +7,17 @@
 
 using namespace Tetruino;
 
-#include <MemoryFree.h>
-
 Game game(Bounds { 8, 32 });
 
 void setup()
 {
+	Serial.begin(9600);
+	
+	for(unsigned char i = 0; i < 16; i++)
+	{
+		Serial.print(Blocks::IShape.get(i));
+	}
+	
 	// Random pin
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(A0, INPUT);
@@ -29,5 +34,7 @@ void loop()
 	crashLEDState = !crashLEDState;
 	
 	delay(500);
-	game.loop();
+	//game.loop();
+	
+	
 }

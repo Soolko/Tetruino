@@ -7,7 +7,7 @@ BoolArray::BoolArray(const unsigned long size, const uint8_t state[]) : size(siz
 	arrayBytesCount = size / 8u;
 	if(size % 8 > 0) arrayBytesCount++;
 	
-	arrayBytes = new unsigned char[arrayBytesCount];
+	arrayBytes = new uint8_t[arrayBytesCount];
 	
 	if(state == nullptr) clear();
 	else
@@ -38,7 +38,7 @@ void BoolArray::set(const unsigned long index, const bool value)
 	const unsigned int arrayIndex = index / 8u;
 	const unsigned char byteIndex = index % 8u;
 	
-	unsigned char newInt = 0u;
+	uint8_t newInt = 0u;
 	for(unsigned char i = 0; i < 8; i++)
 	{
 		newInt |= i == byteIndex ? (value << byteIndex) : (arrayBytes[arrayIndex] << i) & 1u;
