@@ -7,32 +7,19 @@
 
 using namespace Tetruino;
 
-// Constants
-constexpr Bounds bounds = { 8u, 32u };
-
 // Objects
-//Game game(bounds);
-
-Renderer renderer(bounds);
+Game game(Bounds { 8u, 32u });
 
 void setup()
 {
 	// Random pin
 	pinMode(A0, INPUT);
 	randomSeed(digitalRead(A0));
+	
+	game.setup();
 }
-
-Block block = Blocks::rightZ;
 
 void loop()
 {
-	renderer.clear();
-	
-	renderer.drawBlock(block, 2, 2);
-	
-	renderer.draw();
-	
-	delay(500);
-	
-	block.rotateLeft();
+	game.loop();
 }

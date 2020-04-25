@@ -1,8 +1,9 @@
 #ifndef TETRUINO_BLOCK_HPP
 #define TETRUINO_BLOCK_HPP
 
-#include "Rotation.hpp"
+#include "BoolArray.hpp"
 #include "Colour.hpp"
+#include "Rotation.hpp"
 
 namespace Tetruino
 {
@@ -11,155 +12,46 @@ namespace Tetruino
 	public:
 		Block
 		(
-			unsigned char bounds,
-			const bool* baseShape, Rotation baseRotation,
+			unsigned char size,
+			const BoolArray baseShape, Rotation baseRotation,
 			const Colour& colour
 		);
-		~Block();
 		
+		const unsigned char size;
 		const Colour colour;
 		
-		// The width or height of the shape. Width == Height.
-		const unsigned char bounds;
-		
-		bool* shape;
+		BoolArray shape;
 		Rotation rotation;
 		
 		void rotateLeft();
 		void rotateRight();
+	};
+	
+	class Blocks final
+	{
+	public:
+		// Initialise
+		Blocks() :
+			_I(makeI()), _O(makeO()), _T(makeT()),
+			_S(makeS()), _Z(makeZ()),
+			_J(makeJ()), _L(makeL()) {}
+		
+		// Definitions
+		static constexpr unsigned char blockCount = 7;
+		const Block _I, _O, _T, _S, _Z, _J, _L;
+		const Block* blocks[blockCount] = { &_I, &_O, &_T, &_S, &_Z, &_J, &_L };
 	private:
-		void copyArray(const bool* source, bool* target);
+		// Builder methods
+		static const Block& makeI();
+		static const Block& makeO();
+		static const Block& makeT();
+		static const Block& makeS();
+		static const Block& makeZ();
+		static const Block& makeJ();
+		static const Block& makeL();
 	};
 	
-	namespace Blocks
-	{
-		constexpr bool straightShape[] = 
-		{
-			false,	false,	false,	false,
-			true,	true,	true,	true,
-			false,	false,	false,	false,
-			false,	false,	false,	false
-		};
-		
-		static const Block straight = Block
-		(
-			4,
-			straightShape,
-			Rotation::up,
-			Colour { 0, ColourBrightness, ColourBrightness }
-		);
-		
-		
-		constexpr bool leftLShape[] =
-		{
-			false,	false,	false,
-			true,	false,	false,
-			true,	true,	true
-		};
-		
-		static const Block leftL = Block
-		(
-			3,
-			leftLShape,
-			Rotation::up,
-			Colour { 0, 0, ColourBrightness }
-		);
-		
-		
-		constexpr bool rightLShape[] =
-		{
-			false,	false,	false,
-			false,	false,	true,
-			true,	true,	true
-		};
-		
-		static const Block rightL = Block
-		(
-			3,
-			rightLShape,
-			Rotation::up,
-			Colour { ColourBrightness, ColourBrightness / 4, 0 }
-		);
-		
-		
-		constexpr bool squareShape[] =
-		{
-			true,	true,
-			true,	true
-		};
-		
-		static const Block square = Block
-		(
-			2,
-			squareShape,
-			Rotation::up,
-			Colour { ColourBrightness, ColourBrightness, 0 }
-		);
-		
-		
-		constexpr bool leftZShape[] =
-		{
-			false,	false,	false,
-			false,	true,	true,
-			true,	true,	false
-		};
-		
-		static const Block leftZ = Block
-		(
-			3,
-			leftZShape,
-			Rotation::up,
-			Colour { 0, ColourBrightness, 0 }
-		);
-		
-		
-		constexpr bool rightZShape[] =
-		{
-			false,	false,	false,
-			true,	true,	false,
-			false,	true,	true
-		};
-		
-		static const Block rightZ = Block
-		(
-			3,
-			rightZShape,
-			Rotation::up,
-			Colour { ColourBrightness, 0, 0 }
-		);
-		
-		
-		constexpr bool TShape[] =
-		{
-			false,	false,	false,
-			false,	true,	false,
-			true,	true,	true
-		};
-		
-		static const Block T = Block
-		(
-			3,
-			TShape,
-			Rotation::up,
-			Colour { ColourBrightness, 0, ColourBrightness }
-		);
-	}
-	
-	constexpr unsigned char blockCount = 7;
-	static const Block* blockList[blockCount] =
-	{
-		&Blocks::straight,
-		
-		&Blocks::leftL,
-		&Blocks::rightL,
-		
-		&Blocks::square,
-		
-		&Blocks::leftZ,
-		&Blocks::rightZ,
-		
-		&Blocks::T
-	};
+	static const Blocks BlocksInstance = Blocks();
 }
 
 #endif

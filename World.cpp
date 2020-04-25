@@ -7,14 +7,16 @@ using namespace Tetruino;
 
 World::World(const Bounds& bounds, const Renderer& renderer) : bounds(bounds), renderer(&renderer)
 {
-	
+	collisionMap = new BoolArray(bounds.getGridCount());
 }
 
-const Block* World::getCurrentBlock() { return currentBlock; }
-const Block* World::getNextBlock() { return nextBlock; }
+World::~World()
+{
+	delete collisionMap;
+}
 
 const Block* World::randomBlock()
 {
-	long result = random(0, blockCount);
-	return blockList[result];
+	long result = random(0, Blocks::blockCount);
+	return BlocksInstance.blocks[result];
 }

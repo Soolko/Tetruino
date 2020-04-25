@@ -5,67 +5,162 @@ using namespace Tetruino;
 
 Block::Block
 (
-	unsigned char bounds,
-	const bool* baseShape, Rotation baseRotation,
+	unsigned char size,
+	const BoolArray baseShape, Rotation baseRotation,
 	const Colour& colour
 ) :
-	bounds(bounds),
-	rotation(baseRotation),
-	colour(colour)
+	size(size),
+	colour(colour),
+	shape(shape),
+	rotation(baseRotation)
 {
-	shape = new bool[bounds * bounds];
-	copyArray(baseShape, shape);
-}
-
-Block::~Block()
-{
-	delete[] shape;
 }
 
 // Translation/Rotation
 void Block::rotateLeft()
 {
-	bool* output = new bool[bounds * bounds];
+	BoolArray output(size * size);
 	
-	for(unsigned char x = 0; x < bounds; x++)
+	for(unsigned char x = 0; x < size; x++)
 	{
-		for(unsigned char y = 0; y < bounds; y++)
+		for(unsigned char y = 0; y < size; y++)
 		{
-			const unsigned int newX = bounds - y - 1;
+			const unsigned int newX = size - y - 1;
 			const unsigned int newY = x;
 			
-			output[(y * bounds) + x] = shape[(newY * bounds) + newX];
+			output.set((y * size) + x, shape.get((newY * size) + newX));
 		}
 	}
 	
-	copyArray(output, shape);
-	delete[] output;
-	
+	shape = output;
 	rotation = rotation.rotateLeft();
 }
 
 void Block::rotateRight()
 {
-	bool* output = new bool[bounds * bounds];
+	BoolArray output(size * size);
 	
-	for(unsigned char x = 0; x < bounds; x++)
+	for(unsigned char x = 0; x < size; x++)
 	{
-		for(unsigned char y = 0; y < bounds; y++)
+		for(unsigned char y = 0; y < size; y++)
 		{
 			const unsigned int newX = y;
-			const unsigned int newY = bounds - x - 1;
+			const unsigned int newY = size - x - 1;
 			
-			output[(y * bounds) + x] = shape[(newY * bounds) + newX];
+			output.set((y * size) + x, shape.get((newY * size) + newX));
 		}
 	}
 	
-	copyArray(output, shape);
-	delete[] output;
-	
+	shape = output;
 	rotation = rotation.rotateRight();
 }
 
-void Block::copyArray(const bool* source, bool* target)
+/* 
+ *   BLOCK BUILDER METHODS
+ */
+
+// Builders
+const Block& Blocks::makeI()
 {
-	for(unsigned char i = 0; i < bounds * bounds; i++) target[i] = source[i];
+	BoolArray shape(16);
+	for(unsigned char i = 4; i < 8; i++) shape.set(i, true);
+	
+	return Block
+	(
+		4,
+		shape,
+		Rotation::up,
+		Colour { 0, ColourBrightness, ColourBrightness }
+	);
+}
+
+const Block& Blocks::makeO()
+{
+	BoolArray shape(4);
+	for(unsigned char i = 0; i < 4; i++) shape.set(i, true);
+	
+	return Block
+	(
+		2,
+		shape,
+		Rotation::up,
+		Colour { ColourBrightness, ColourBrightness, 0 }
+	);
+}
+
+const Block& Blocks::makeT()
+{
+	BoolArray shape(9);
+	shape.set(4, true);
+	shape.set(6, true);
+	shape.set(7, true);
+	shape.set(8, true);
+	
+	return Block
+	(
+		3,
+		shape,
+		Rotation::up,
+		Colour { ColourBrightness, 0, ColourBrightness }
+	);
+}
+
+const Block& Blocks::makeS()
+{
+	BoolArray shape(9);
+	for(unsigned char i = 4; i <= 7; i++) shape.set(i, true);
+	
+	return Block
+	(
+		3,
+		shape,
+		Rotation::up,
+		Colour { 0, ColourBrightness, 0 }
+	);
+}
+
+const Block& Blocks::makeZ()
+{
+	BoolArray shape(9);
+	shape.set(3, true);
+	shape.set(4, true);
+	shape.set(7, true);
+	shape.set(8, true);
+	
+	return Block
+	(
+		3,
+		shape,
+		Rotation::up,
+		Colour { ColourBrightness, 0, 0 }
+	);
+}
+
+const Block& Blocks::makeJ()
+{
+	BoolArray shape(9);
+	shape.set(3, true);
+	for(unsigned char i = 6; i <= 8; i++) shape.set(i, true);
+	
+	return Block
+	(
+		3,
+		shape,
+		Rotation::up,
+		Colour { 0, 0, ColourBrightness }
+	);
+}
+
+const Block& Blocks::makeL()
+{
+	BoolArray shape(9);
+	for(unsigned char i = 5; i <= 8; i++) shape.set(i, true);
+	
+	return Block
+	(
+		3,
+		shape,
+		Rotation::up,
+		Colour { ColourBrightness, ColourBrightness / 4, 0 }
+	);
 }

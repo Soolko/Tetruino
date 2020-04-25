@@ -6,7 +6,7 @@
 
 namespace Tetruino
 {
-	class Game
+	class Game final
 	{
 	public:
 		Game(const Bounds& bounds);
@@ -14,6 +14,13 @@ namespace Tetruino
 		
 		void setup();
 		void loop();
+	private:
+		// Const settings
+		const Bounds bounds;
+		
+		// Core objects
+		Renderer* renderer;
+		World* world;
 	};
 }
 

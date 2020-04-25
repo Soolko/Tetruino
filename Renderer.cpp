@@ -26,11 +26,11 @@ Renderer::~Renderer()
 
 void Renderer::drawBlock(const Block& block, const int x, const int y)
 {
-	for(unsigned char blockY = 0; blockY < block.bounds; blockY++)
-	for(unsigned char blockX = 0; blockX < block.bounds; blockX++)
+	for(unsigned char blockY = 0; blockY < block.size; blockY++)
+	for(unsigned char blockX = 0; blockX < block.size; blockX++)
 	{
 		// Next iteration if block doesn't exist at this point
-		if(!block.shape[blockX + (blockY * block.bounds)]) continue;
+		if(!block.shape.get(blockX + (blockY * block.size))) continue;
 		
 		// Get final coord
 		const int bufferX = blockX + x;

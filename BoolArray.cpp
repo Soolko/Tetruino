@@ -2,19 +2,28 @@
 
 using namespace Tetruino;
 
-BoolArray::BoolArray(const unsigned long size) : size(size)
+BoolArray::BoolArray(const unsigned long size, const uint8_t state[]) : size(size)
 {
 	arrayBytesCount = size / 8u;
 	if(size % 8 > 0) arrayBytesCount++;
 	
 	arrayBytes = new unsigned char[arrayBytesCount];
-	for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = 0;
+	
+	if(state == nullptr) clear();
+	else
+	{
+		for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = state[i];
+	}
 }
 
 BoolArray::~BoolArray()
 {
 	delete[] arrayBytes;
 }
+
+
+unsigned long BoolArray::getSize() { return size; }
+
 
 bool BoolArray::get(const unsigned long index) const
 {
@@ -35,4 +44,10 @@ void BoolArray::set(const unsigned long index, const bool value)
 		newInt |= i == byteIndex ? (value << byteIndex) : (arrayBytes[arrayIndex] << i) & 1u;
 	}
 	arrayBytes[arrayIndex] = newInt;
+}
+
+
+void BoolArray::clear()
+{
+	for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = 0;
 }

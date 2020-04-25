@@ -1,10 +1,10 @@
 #ifndef TETRUINO_WORLD_HPP
 #define TETRUINO_WORLD_HPP
 
-#include "Block.hpp"
 #include "Renderer.hpp"
-#include "Colour.hpp"
 #include "Bounds.hpp"
+#include "Block.hpp"
+#include "BoolArray.hpp"
 
 namespace Tetruino
 {
@@ -12,27 +12,15 @@ namespace Tetruino
 	{
 	public:
 		World(const Bounds& bounds, const Renderer& renderer);
-		
-		// Getters
-		const Block* getCurrentBlock();
-		const Block* getNextBlock();
+		~World();
 	protected:
 		// Renderer object
 		const Renderer* renderer;
 		
-		// World bounds
+		// World
 		const Bounds bounds;
-		
-		// Current block
-		Block* currentBlock;
-		int x = xDefault, y = yDefault;
-		
-		// Next block
-		Block* nextBlock;
+		BoolArray* collisionMap;
 	private:
-		const int xDefault = bounds.width / 2;
-		const int yDefault = 0;
-		
 		const Block* randomBlock();
 	};
 }
