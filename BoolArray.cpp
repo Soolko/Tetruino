@@ -38,12 +38,8 @@ void BoolArray::set(const unsigned long index, const bool value)
 	const unsigned int arrayIndex = index / 8u;
 	const unsigned char byteIndex = index % 8u;
 	
-	uint8_t newInt = 0u;
-	for(unsigned char i = 0; i < 8; i++)
-	{
-		newInt |= i == byteIndex ? (value << byteIndex) : (arrayBytes[arrayIndex] << i) & 1u;
-	}
-	arrayBytes[arrayIndex] = newInt;
+	arrayBytes[arrayIndex] = arrayBytes[arrayIndex] & (0xff - (1 << byteIndex));
+	arrayBytes[arrayIndex] += (uint8_t) value << byteIndex;
 }
 
 

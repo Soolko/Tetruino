@@ -17,6 +17,8 @@ namespace Tetruino
 		void set(unsigned long index, bool value);	// Write
 		
 		void clear();
+		
+		BoolArray& operator=(const BoolArray& other) = delete;
 	protected:
 		unsigned long size;
 		

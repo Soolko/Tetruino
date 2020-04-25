@@ -15,11 +15,17 @@ Game::~Game()
 	delete renderer;
 }
 
+Block* block;
+
 void Game::setup()
 {
+	block = new Block(Blocks::ISize, Blocks::IShape, Blocks::IColour);
 }
 
 void Game::loop()
 {
-	
+	renderer->clear();
+	renderer->drawBlock(*block, 2, 2);
+	renderer->draw();
+	block->rotateRight();
 }

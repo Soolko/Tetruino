@@ -1,16 +1,17 @@
 #include "Block.hpp"
-
+#include <Arduino.h>
 using namespace Tetruino;
 
 Block::Block
 (
 	unsigned char size,
-	const BoolArray baseShape, Rotation baseRotation,
-	const Colour& colour
+	const BoolArray& baseShape,
+	const Colour& colour,
+	Rotation baseRotation
 ) :
 	size(size),
 	colour(colour),
-	shape(shape),
+	shape(baseShape),
 	rotation(baseRotation)
 {
 }
@@ -31,7 +32,9 @@ void Block::rotateLeft()
 		}
 	}
 	
-	shape = output;
+	// Copy array
+	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
+	
 	rotation = rotation.rotateLeft();
 }
 
@@ -50,6 +53,8 @@ void Block::rotateRight()
 		}
 	}
 	
-	shape = output;
+	// Copy array
+	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
+	
 	rotation = rotation.rotateRight();
 }

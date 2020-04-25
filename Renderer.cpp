@@ -29,12 +29,6 @@ void Renderer::drawBlock(const Block& block, const int x, const int y)
 	for(unsigned char blockY = 0; blockY < block.size; blockY++)
 	for(unsigned char blockX = 0; blockX < block.size; blockX++)
 	{
-		Serial.print("Block (x:");
-		Serial.print(blockX);
-		Serial.print(",y:");
-		Serial.print(blockY);
-		Serial.print("):");
-		Serial.println(block.shape.get(blockX + (blockY * block.size)));
 		// Next iteration if block doesn't exist at this point
 		if(!block.shape.get(blockX + (blockY * block.size))) continue;
 		
