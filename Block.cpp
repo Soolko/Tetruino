@@ -60,7 +60,7 @@ void Block::rotateRight()
  */
 
 // Builders
-const Block& Blocks::makeI()
+Block makeI()
 {
 	BoolArray shape(16);
 	for(unsigned char i = 4; i < 8; i++) shape.set(i, true);
@@ -74,7 +74,7 @@ const Block& Blocks::makeI()
 	);
 }
 
-const Block& Blocks::makeO()
+Block makeO()
 {
 	BoolArray shape(4);
 	for(unsigned char i = 0; i < 4; i++) shape.set(i, true);
@@ -88,7 +88,7 @@ const Block& Blocks::makeO()
 	);
 }
 
-const Block& Blocks::makeT()
+Block makeT()
 {
 	BoolArray shape(9);
 	shape.set(4, true);
@@ -105,7 +105,7 @@ const Block& Blocks::makeT()
 	);
 }
 
-const Block& Blocks::makeS()
+Block makeS()
 {
 	BoolArray shape(9);
 	for(unsigned char i = 4; i <= 7; i++) shape.set(i, true);
@@ -119,7 +119,7 @@ const Block& Blocks::makeS()
 	);
 }
 
-const Block& Blocks::makeZ()
+Block makeZ()
 {
 	BoolArray shape(9);
 	shape.set(3, true);
@@ -136,7 +136,7 @@ const Block& Blocks::makeZ()
 	);
 }
 
-const Block& Blocks::makeJ()
+Block makeJ()
 {
 	BoolArray shape(9);
 	shape.set(3, true);
@@ -151,7 +151,7 @@ const Block& Blocks::makeJ()
 	);
 }
 
-const Block& Blocks::makeL()
+Block makeL()
 {
 	BoolArray shape(9);
 	for(unsigned char i = 5; i <= 8; i++) shape.set(i, true);

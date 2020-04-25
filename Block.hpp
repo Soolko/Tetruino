@@ -27,31 +27,16 @@ namespace Tetruino
 		void rotateRight();
 	};
 	
-	class Blocks final
+	namespace Blocks
 	{
-	public:
-		// Initialise
-		Blocks() :
-			_I(makeI()), _O(makeO()), _T(makeT()),
-			_S(makeS()), _Z(makeZ()),
-			_J(makeJ()), _L(makeL()) {}
-		
-		// Definitions
-		static constexpr unsigned char blockCount = 7;
-		const Block _I, _O, _T, _S, _Z, _J, _L;
-		const Block* blocks[blockCount] = { &_I, &_O, &_T, &_S, &_Z, &_J, &_L };
-	private:
-		// Builder methods
-		static const Block& makeI();
-		static const Block& makeO();
-		static const Block& makeT();
-		static const Block& makeS();
-		static const Block& makeZ();
-		static const Block& makeJ();
-		static const Block& makeL();
+		static Block makeI();
+		static Block makeO();
+		static Block makeT();
+		static Block makeS();
+		static Block makeZ();
+		static Block makeJ();
+		static Block makeL();
 	};
-	
-	static const Blocks BlocksInstance = Blocks();
 }
 
 #endif

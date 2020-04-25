@@ -20,8 +20,6 @@ namespace Tetruino
 		// World
 		const Bounds bounds;
 		BoolArray* collisionMap;
-	private:
-		const Block* randomBlock();
 	};
 }
 

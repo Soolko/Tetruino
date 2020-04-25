@@ -14,9 +14,3 @@ World::~World()
 {
 	delete collisionMap;
 }
-
-const Block* World::randomBlock()
-{
-	long result = random(0, Blocks::blockCount);
-	return BlocksInstance.blocks[result];
-}
