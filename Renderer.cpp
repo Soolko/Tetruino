@@ -4,7 +4,7 @@
 using namespace Tetruino;
 
 // Set pin here
-constexpr uint8_t OutputPin = 3;
+constexpr unsigned char OutputPin = 3;
 #define FLIP_EVEN
 
 Renderer::Renderer(const Bounds& bounds) : bounds(bounds)
@@ -16,7 +16,7 @@ Renderer::Renderer(const Bounds& bounds) : bounds(bounds)
 	 * to avoid the previous block before this was allocated being read.
 	 */
 	clear();
-	FastLED.addLeds<NEOPIXEL, 3>(buffer, bounds.getGridCount());
+	FastLED.addLeds<LEDType, OutputPin>(buffer, bounds.getGridCount());
 }
 
 Renderer::~Renderer()
@@ -24,7 +24,12 @@ Renderer::~Renderer()
 	delete[] buffer;
 }
 
-void Renderer::drawBlock(const Block& block, const int x, const int y)
+void Renderer::drawBlock
+(
+	const Block& block,
+	const int x, const int y,
+	const bool customColour, const Colour colour
+)
 {
 	for(unsigned char blockY = 0; blockY < block.size; blockY++)
 	for(unsigned char blockX = 0; blockX < block.size; blockX++)
@@ -32,7 +37,7 @@ void Renderer::drawBlock(const Block& block, const int x, const int y)
 		// Next iteration if block doesn't exist at this point
 		if(!block.shape.get(blockX + (blockY * block.size))) continue;
 		
-		// Get final coord
+		// Get final coordú
 		const int bufferX = blockX + x;
 		const int bufferY = blockY + y;
 		
@@ -42,7 +47,7 @@ void Renderer::drawBlock(const Block& block, const int x, const int y)
 		if(bufferY >= bounds.height) continue;
 		
 		// Set buffer
-		buffer[bufferX + (bufferY * bounds.width)] = block.colour;
+		buffer[bufferX + (bufferY * bounds.width)] = customColour ? colour : block.colour;
 	}
 }
 

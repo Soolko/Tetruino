@@ -1,16 +1,19 @@
-#include <Arduino.h>
-
 #include "World.hpp"
-#include "Block.hpp"
+
+#include <Arduino.h>
 
 using namespace Tetruino;
 
-World::World(const Bounds& bounds, const Renderer& renderer) : bounds(bounds), renderer(&renderer)
-{
-	collisionMap = new BoolArray(bounds.getGridCount());
-}
-
 World::~World()
 {
-	delete collisionMap;
+	delete blocks;
+}
+
+const BoolArray& World::getCollisionMap() const { return collisionMap; }
+const Vector<Block>& World::getBlocks() const { return *blocks; }
+
+void World::addBlock(const Block& block)
+{
+	if(blocks == nullptr) blocks = new Vector<Block>(block);
+	else blocks->add(block);
 }

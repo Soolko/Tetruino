@@ -3,24 +3,31 @@
 
 #include "World.hpp"
 #include "Renderer.hpp"
+#include "FallingBlock.hpp"
 
 namespace Tetruino
 {
 	class Game final
 	{
 	public:
-		Game(const Bounds& bounds);
+		Game::Game(const Bounds& bounds) : renderer(bounds), world(bounds) {}
 		~Game();
 		
 		void setup();
 		void loop();
 	private:
-		// Const settings
-		const Bounds bounds;
-		
 		// Core objects
-		Renderer* renderer;
-		World* world;
+		Renderer renderer;
+		World world;
+		
+		// Variables
+		const Block* nextBlock;
+		FallingBlock* currentBlock;
+		
+		// Methods
+		void pickNextBlock();
+		const Block* getBlock(unsigned char id);
+		const Block* getRandomBlock();
 	};
 }
 

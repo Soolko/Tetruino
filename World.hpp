@@ -5,21 +5,28 @@
 #include "Bounds.hpp"
 #include "Block.hpp"
 #include "BoolArray.hpp"
+#include "Vector.hpp"
 
 namespace Tetruino
 {
-	class World
+	class World final
 	{
 	public:
-		World(const Bounds& bounds, const Renderer& renderer);
+		World(const Bounds& bounds) : bounds(bounds), collisionMap(bounds.getGridCount()) {}
 		~World();
-	protected:
-		// Renderer object
-		const Renderer* renderer;
 		
-		// World
+		// Public vars
 		const Bounds bounds;
-		BoolArray* collisionMap;
+		
+		// Methods
+		void addBlock(const Block& block);
+		
+		// Getters
+		const BoolArray& getCollisionMap() const;
+		const Vector<Block>& getBlocks() const;
+	private:
+		BoolArray collisionMap;
+		Vector<Block>* blocks;
 	};
 }
 
