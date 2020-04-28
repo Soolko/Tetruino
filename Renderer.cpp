@@ -38,8 +38,8 @@ void Renderer::drawBlock
 		if(!block.shape.get(blockX + (blockY * block.size))) continue;
 		
 		// Get final coordú
-		const int bufferX = blockX + x;
-		const int bufferY = blockY + y;
+		const int bufferX = blockX + x + block.getOffsetX();
+		const int bufferY = blockY + y + block.getOffsetY();
 		
 		// Bounds checks
 		if(bufferX < 0 || bufferY < 0) continue;
@@ -47,7 +47,10 @@ void Renderer::drawBlock
 		if(bufferY >= bounds.height) continue;
 		
 		// Set buffer
-		buffer[bufferX + (bufferY * bounds.width)] = customColour ? colour : block.colour;
+		const int bufferIndex = bufferX + (bufferY * bounds.width);
+		if(bufferIndex > bounds.getGridCount()) return;
+		
+		buffer[bufferIndex] = customColour ? colour : block.colour;
 	}
 }
 

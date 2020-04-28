@@ -1,6 +1,30 @@
 #include "Block.hpp"
 #include <Arduino.h>
+
 using namespace Tetruino;
+
+// Constructors
+Block::Block
+(
+	unsigned char size,
+	const BoolArray& baseShape,
+	const Colour colour
+):
+	size(size),
+	shape(baseShape),
+	colour(colour)
+{
+	calculateOffset();
+}
+
+Block::Block(const Block& other):
+	size(other.size),
+	shape(other.shape),
+	colour(other.colour)
+{
+	calculateOffset();
+}
+
 
 // Translation/Rotation
 void Block::rotateLeft()
@@ -20,8 +44,7 @@ void Block::rotateLeft()
 	
 	// Copy array
 	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
-	
-	rotation = rotation.rotateLeft();
+	calculateOffset();
 }
 
 void Block::rotateRight()
@@ -41,14 +64,48 @@ void Block::rotateRight()
 	
 	// Copy array
 	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
+	calculateOffset();
+}
+
+char Block::getOffsetX() const { return offsetX; }
+char Block::getOffsetY() const { return offsetY; }
+
+void Block::calculateOffset()
+{
+	bool hit = false;
+	unsigned char minX = size, minY = size;
+	unsigned char maxX = 0, maxY = 0;
 	
-	rotation = rotation.rotateRight();
+	// Find bounds of actual shape
+	for(unsigned char y = 0; y < size; y++)
+	for(unsigned char x = 0; x < size; x++)
+	{
+		if(shape.get(x + (y * size)))
+		{
+			if(minX > x) minX = x;
+			if(minY > y) minY = y;
+			if(maxX < x) maxX = x;
+			if(maxY < y) maxY = y;
+			hit = true;
+		}
+	}
+	
+	// Sanity check that shape isn't empty
+	if(!hit) { offsetX = 0; offsetY = 0; }
+	
+	const unsigned char boxCentre = size / 2;
+	
+	const unsigned char centreX = (maxX + minX) / 2u;
+	const unsigned char centreY = (maxY + minY) / 2u;
+	
+	offsetX = (boxCentre - centreX);
+	offsetY = (boxCentre - centreY);
 }
 
 /*
 	Definitions
  */
-constexpr uint8_t IShapeRaw[] = { 0b00001111u, 0b0u };
+constexpr uint8_t IShapeRaw[] = { 0b00001111u, 0b00000000u };
 const BoolArray IShape(16, IShapeRaw);
 const Block Blocks::I = Block(4, IShape, Colour { 0, ColourBrightness, ColourBrightness });
 

@@ -17,11 +17,10 @@ namespace Tetruino
 			unsigned char size,
 			const BoolArray& baseShape,
 			const Colour& colour,
-			Rotation baseRotation,
 			
 			// FallingBlock
 			const World* world
-		) : Block(size, baseShape, colour, baseRotation),	/* Block */
+		) : Block(size, baseShape, colour),	/* Block */
 			world(world), x(world->bounds.width / 2), y(0)	/* FallingBlock */ {}
 		
 		/* 

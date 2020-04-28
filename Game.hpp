@@ -21,13 +21,13 @@ namespace Tetruino
 		World world;
 		
 		// Variables
-		const Block* nextBlock;
+		/*const*/ Block* nextBlock;
 		FallingBlock* currentBlock;
 		
 		// Methods
 		void pickNextBlock();
-		const Block* getBlock(unsigned char id);
-		const Block* getRandomBlock();
+		/*const*/ Block* getBlock(unsigned char id);
+		/*const*/ Block* getRandomBlock();
 	};
 }
 

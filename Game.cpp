@@ -25,12 +25,16 @@ void Game::setup()
 void Game::loop()
 {
 	constexpr unsigned char Brightness = ColourBrightness * 2;
-	renderer.drawBlock(*nextBlock, 2, 2, true, Colour { Brightness, Brightness, Brightness });
-	renderer.draw();
 	
-	delay(500);
+	for(unsigned char i = 0; i < 4; i++)
+	{
+		renderer.drawBlock(*nextBlock, 2, 2, true, Colour { Brightness, Brightness, Brightness });
+		renderer.draw();
+		nextBlock->rotateLeft();
+		delay(1000);
+		renderer.clear();
+	}
 	
-	renderer.clear();
 	pickNextBlock();
 }
 
@@ -40,7 +44,7 @@ void Game::pickNextBlock()
 	nextBlock = getRandomBlock();
 }
 
-const Block* Game::getBlock(unsigned char index)
+/*const*/ Block* Game::getBlock(unsigned char index)
 {
 	switch(index)
 	{
@@ -55,4 +59,4 @@ const Block* Game::getBlock(unsigned char index)
 	}
 }
 
-const Block* Game::getRandomBlock() { return getBlock(random(Blocks::blockCount)); }
+/*const*/ Block* Game::getRandomBlock() { return getBlock(random(Blocks::blockCount)); }
