@@ -23,7 +23,8 @@ namespace Tetruino
 		(
 			const Block& block,
 			int x, int y,
-			bool customColour = false, Colour colour = Colour { 0, 0, 0 }
+			bool customColour = false, Colour colour = Colour { 0, 0, 0 },
+			bool additive = false
 		);
 		
 		void draw();

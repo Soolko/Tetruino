@@ -9,7 +9,9 @@ namespace Tetruino
 	class Block
 	{
 	public:
-		Block(unsigned char size, const BoolArray& baseShape, const Colour colour);
+		enum class YAlignment : char { up = 1, down = -1 };
+		
+		Block(unsigned char size, YAlignment yAlignment, const BoolArray& baseShape, const Colour colour);
 		Block(const Block& other);
 		
 		const unsigned char size;
@@ -19,10 +21,19 @@ namespace Tetruino
 		void rotateLeft();
 		void rotateRight();
 		
+		struct Bounds
+		{
+			unsigned char minX; unsigned char maxX;
+			unsigned char minY; unsigned char maxY;
+		};
+		Bounds getBounds() const;
+		
 		char getOffsetX() const; char getOffsetY() const;
 	protected:
-		void calculateOffset();
+		const YAlignment yAlignment;
 		char offsetX, offsetY;
+		
+		void calculateOffset();
 	};
 	
 	namespace Blocks

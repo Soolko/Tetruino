@@ -4,6 +4,8 @@
 #include "Block.hpp"
 #include "World.hpp"
 
+#include <Arduino.h>
+
 namespace Tetruino
 {
 	class FallingBlock : public Block
@@ -15,12 +17,13 @@ namespace Tetruino
 		(
 			// Block
 			unsigned char size,
+			YAlignment yAlignment,
 			const BoolArray& baseShape,
 			const Colour& colour,
 			
 			// FallingBlock
 			const World* world
-		) : Block(size, baseShape, colour),	/* Block */
+		) : Block(size, yAlignment, baseShape, colour),	/* Block */
 			world(world), x(world->bounds.width / 2), y(0)	/* FallingBlock */ {}
 		
 		/* 
@@ -29,7 +32,16 @@ namespace Tetruino
 		bool setPosition(int x, int y);
 		int getX() const; int getY() const;
 		
-		bool isColliding() const;
+		enum class CollisionStatus : uint8_t
+		{
+			none	= 0b0000,
+			bottom	= 0b0001,
+			top		= 0b0010,	// wtf?
+			left	= 0b0100,
+			right	= 0b1000
+		};
+		
+		uint8_t isColliding() const;
 	protected:
 		// Vars
 		int x, y;

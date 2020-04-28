@@ -28,7 +28,8 @@ void Renderer::drawBlock
 (
 	const Block& block,
 	const int x, const int y,
-	const bool customColour, const Colour colour
+	const bool customColour, const Colour colour,
+	const bool additive
 )
 {
 	for(unsigned char blockY = 0; blockY < block.size; blockY++)
@@ -50,7 +51,16 @@ void Renderer::drawBlock
 		const int bufferIndex = bufferX + (bufferY * bounds.width);
 		if(bufferIndex > bounds.getGridCount()) return;
 		
-		buffer[bufferIndex] = customColour ? colour : block.colour;
+		const Colour finalColour = customColour ? colour : block.colour;
+		if(!additive) buffer[bufferIndex] = finalColour;
+		else
+		{
+			Colour oldColour = buffer[bufferIndex];
+			oldColour.r += finalColour.r;
+			oldColour.g += finalColour.g;
+			oldColour.b += finalColour.b;
+			buffer[bufferIndex] = oldColour;
+		}
 	}
 }
 

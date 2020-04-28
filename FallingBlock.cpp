@@ -2,33 +2,97 @@
 
 using namespace Tetruino;
 
-bool FallingBlock::isColliding() const
+/* 
+ * Like all collision code, this is an absolute mess.
+ */
+uint8_t FallingBlock::isColliding() const
 {
-	const unsigned int worldSize = world->bounds.getGridCount();
+	bool left = false;
+	bool right = false;
+	bool top = false;
+	bool bottom = false;
 	
-	for(unsigned char blockY = 0; blockY < size; blockY++)
-	for(unsigned char blockX = 0; blockX < size; blockX++)
+	const Bounds bounds = getBounds();
+	
+	// Quick side checks
+	if((short) bounds.minX - 1 < 0) left = true;
+	if((short) bounds.maxX + 1 >= world->bounds.width) right = true;
+	if((short) bounds.minY - 1 < 0) top = true;
+	if((short) bounds.maxY + 1 >= world->bounds.height) bottom = true;
+	
+	/*
+		In-depth collision map check
+	 */
+	for(unsigned char shapeY = bounds.minY; shapeY <= bounds.maxY; shapeY++)
+	for(unsigned char shapeX = bounds.minX; shapeX <= bounds.maxX; shapeX++)
 	{
-		// If block doesn't exist at this position, move to next
-		if(!shape.get(blockX + (blockY * size))) continue;
+		// Continue if shape is not at position
+		if(!shape.get(shapeX + (shapeY * size))) continue;
 		
-		// Block exists here, check world
-		const int worldX = x + blockX;
-		const int worldY = y + blockY;
+		int worldX = x + offsetX + shapeX;
+		int worldY = y + offsetY + shapeY;
 		
-		// World position invalid check
-		if(worldX < 0 || worldY < 0) continue;
+		// Left
+		if(shapeX == bounds.minX)
+		{
+			worldX--;
+			
+			if(worldX < 0) goto leftCheckEnd;
+			if(world->getCollisionMap().get(worldX + (worldY * world->bounds.width)))
+			{
+				// Hit a block to the left
+				left = true;
+			}
+			
+		leftCheckEnd:
+			worldX++;
+		}
 		
-		// Get world index
-		const unsigned long worldIndex = worldX + (worldY * world->bounds.width);
+		// Right
+		if(shapeX == bounds.maxX)
+		{
+			worldX++;
+			
+			if(worldX > world->bounds.width) goto rightCheckEnd;
+			if(world->getCollisionMap().get(worldX + (worldY * world->bounds.width)))
+			{
+				// Hit a block to the right
+				right = true;
+			}
+			
+		rightCheckEnd:
+			worldX--;
+		}
 		
-		// Check if hit end of world or another block
-		if(worldIndex > worldSize) return true;
-		if(world->getCollisionMap().get(worldIndex)) return true;
+		// Down
+		if(shapeY == bounds.maxY)
+		{
+			worldY++;
+			
+			if(worldY > world->bounds.height) goto downCheckEnd;
+			if(world->getCollisionMap().get(worldX + (worldY * world->bounds.width)))
+			{
+				// Hit a block downwards
+				bottom = true;
+			}
+			
+		downCheckEnd:
+			worldY--;
+		}
 	}
 	
-	// Not hit anything
-	return false;
+	// Combine into bitmask
+	uint8_t output = 0;
+	if(!(left || right || top || bottom)) output = (uint8_t) CollisionStatus::none;
+	else
+	{
+		if(left)	output += (uint8_t) CollisionStatus::left;
+		if(right)	output += (uint8_t) CollisionStatus::right;
+		if(top)		output += (uint8_t) CollisionStatus::top;
+		if(bottom)	output += (uint8_t) CollisionStatus::bottom;
+	}
+	
+	return output;
 }
 
 int FallingBlock::getX() const { return x; }

@@ -6,11 +6,13 @@ using namespace Tetruino;
 // Constructors
 Block::Block
 (
-	unsigned char size,
+	const unsigned char size,
+	const YAlignment yAlignment,
 	const BoolArray& baseShape,
 	const Colour colour
 ):
 	size(size),
+	yAlignment(yAlignment),
 	shape(baseShape),
 	colour(colour)
 {
@@ -19,6 +21,7 @@ Block::Block
 
 Block::Block(const Block& other):
 	size(other.size),
+	yAlignment(other.yAlignment),
 	shape(other.shape),
 	colour(other.colour)
 {
@@ -70,11 +73,9 @@ void Block::rotateRight()
 char Block::getOffsetX() const { return offsetX; }
 char Block::getOffsetY() const { return offsetY; }
 
-void Block::calculateOffset()
+Block::Bounds Block::getBounds() const
 {
-	bool hit = false;
-	unsigned char minX = size, minY = size;
-	unsigned char maxX = 0, maxY = 0;
+	Bounds bounds { size, 0, size, 0 };
 	
 	// Find bounds of actual shape
 	for(unsigned char y = 0; y < size; y++)
@@ -82,53 +83,62 @@ void Block::calculateOffset()
 	{
 		if(shape.get(x + (y * size)))
 		{
-			if(minX > x) minX = x;
-			if(minY > y) minY = y;
-			if(maxX < x) maxX = x;
-			if(maxY < y) maxY = y;
-			hit = true;
+			if(bounds.minX > x) bounds.minX = x;
+			if(bounds.maxX < x) bounds.maxX = x;
+			if(bounds.minY > y) bounds.minY = y;
+			if(bounds.maxY < y) bounds.maxY = y;
 		}
 	}
 	
-	// Sanity check that shape isn't empty
-	if(!hit) { offsetX = 0; offsetY = 0; }
+	return bounds;
+}
+
+void Block::calculateOffset()
+{
+	const Bounds bounds = getBounds();
 	
-	const unsigned char boxCentre = size / 2;
-	
-	const unsigned char centreX = (maxX + minX) / 2u;
-	const unsigned char centreY = (maxY + minY) / 2u;
-	
-	offsetX = (boxCentre - centreX);
-	offsetY = (boxCentre - centreY);
+	offsetX = -bounds.minX;
+	switch(yAlignment)
+	{
+	default:
+	case YAlignment::down:
+		offsetY = size - (bounds.maxY + 1);
+		break;
+	case YAlignment::up:
+		offsetY = -bounds.minY;
+		break;
+	}
 }
 
 /*
 	Definitions
  */
-constexpr uint8_t IShapeRaw[] = { 0b00001111u, 0b00000000u };
+using YAlignment = Tetruino::Block::YAlignment;
+
+constexpr uint8_t IShapeRaw[] = { 0b00010001u, 0b00010001u };
 const BoolArray IShape(16, IShapeRaw);
-const Block Blocks::I = Block(4, IShape, Colour { 0, ColourBrightness, ColourBrightness });
+const Block Blocks::I = Block(4, YAlignment::up, IShape, Colour { 0, ColourBrightness, ColourBrightness });
 
 constexpr uint8_t OShapeRaw[] = { 0b1111u };
 const BoolArray OShape(4, OShapeRaw);
-const Block Blocks::O = Block(2, OShape, Colour { ColourBrightness, ColourBrightness, 0 });
+const Block Blocks::O = Block(2, YAlignment::down, OShape, Colour { ColourBrightness, ColourBrightness, 0 });
 
-constexpr uint8_t TShapeRaw[] = { 0b00111010u, 0b0u };
+constexpr uint8_t TShapeRaw[] = { 0b00010111u, 0b0u };
 const BoolArray TShape(9, TShapeRaw);
-const Block Blocks::T = Block(3, TShape, Colour { ColourBrightness, 0, ColourBrightness });
+const Block Blocks::T = Block(3, YAlignment::up, TShape, Colour { ColourBrightness, 0, ColourBrightness });
 
 constexpr uint8_t SShapeRaw[] = { 0b00011110u, 0b0u };
 const BoolArray SShape(9, SShapeRaw);
-const Block Blocks::S = Block(3, SShape, Colour { 0, ColourBrightness, 0 });
+const Block Blocks::S = Block(3, YAlignment::up, SShape, Colour { 0, ColourBrightness, 0 });
 
 constexpr uint8_t ZShapeRaw[] = { 0b00110011u, 0b0u };
 const BoolArray ZShape(9, ZShapeRaw);
-const Block Blocks::Z = Block(3, ZShape, Colour { ColourBrightness, 0, 0 });
+const Block Blocks::Z = Block(3, YAlignment::up, ZShape, Colour { ColourBrightness, 0, 0 });
 
 constexpr uint8_t JShapeRaw[] = { 0b00111001u, 0b0u };
 const BoolArray JShape(9, JShapeRaw);
-const Block Blocks::J = Block(3, JShape, Colour { 0, 0, ColourBrightness });
+const Block Blocks::J = Block(3, YAlignment::up, JShape, Colour { 0, 0, ColourBrightness });
 
 constexpr uint8_t LShapeRaw[] = { 0b00111100u, 0b0u };
 const BoolArray LShape(9, LShapeRaw);
-const Block Blocks::L = Block(3, LShape, { ColourBrightness, ColourBrightness / 4, 0 });
+const Block Blocks::L = Block(3, YAlignment::up, LShape, { ColourBrightness, ColourBrightness / 4, 0 });

@@ -20,14 +20,16 @@ namespace Tetruino
 		Renderer renderer;
 		World world;
 		
-		// Variables
-		/*const*/ Block* nextBlock;
+		// Block randomization
+		const Block* nextBlock;
 		FallingBlock* currentBlock;
 		
-		// Methods
 		void pickNextBlock();
-		/*const*/ Block* getBlock(unsigned char id);
-		/*const*/ Block* getRandomBlock();
+		const Block* getBlock(unsigned char id);
+		const Block* getRandomBlock();
+		
+		// Rendering
+		void renderNextBlock();
 	};
 }
 

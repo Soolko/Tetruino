@@ -24,7 +24,6 @@ BoolArray::~BoolArray()
 
 unsigned long BoolArray::getSize() { return size; }
 
-
 bool BoolArray::get(const unsigned long index) const
 {
 	const unsigned int arrayIndex = index / 8u;
@@ -41,7 +40,6 @@ void BoolArray::set(const unsigned long index, const bool value)
 	arrayBytes[arrayIndex] = arrayBytes[arrayIndex] & (0xff - (1 << byteIndex));
 	arrayBytes[arrayIndex] += (uint8_t) value << byteIndex;
 }
-
 
 void BoolArray::clear()
 {
