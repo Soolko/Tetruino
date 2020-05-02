@@ -1,33 +1,12 @@
 #include "Block.hpp"
-#include <Arduino.h>
 
 using namespace Tetruino;
 
-// Constructors
-Block::Block
-(
-	const unsigned char size,
-	const YAlignment yAlignment,
-	const BoolArray& baseShape,
-	const Colour colour
-):
-	size(size),
-	yAlignment(yAlignment),
-	shape(baseShape),
-	colour(colour)
+Block::Block(const unsigned char size, const YAlignment yAlignment, const BoolArray shape, const Colour colour, const int x, const int y):
+	size(size), yAlignment(yAlignment), shape(shape), colour(colour), x(x), y(y)
 {
 	calculateOffset();
 }
-
-Block::Block(const Block& other):
-	size(other.size),
-	yAlignment(other.yAlignment),
-	shape(other.shape),
-	colour(other.colour)
-{
-	calculateOffset();
-}
-
 
 // Translation/Rotation
 void Block::rotateLeft()
@@ -70,12 +49,9 @@ void Block::rotateRight()
 	calculateOffset();
 }
 
-char Block::getOffsetX() const { return offsetX; }
-char Block::getOffsetY() const { return offsetY; }
-
-Block::Bounds Block::getBounds() const
+Block::ShapeBounds Block::getBounds() const
 {
-	Bounds bounds { size, 0, size, 0 };
+	ShapeBounds bounds { size, 0, size, 0 };
 	
 	// Find bounds of actual shape
 	for(unsigned char y = 0; y < size; y++)
@@ -95,7 +71,7 @@ Block::Bounds Block::getBounds() const
 
 void Block::calculateOffset()
 {
-	const Bounds bounds = getBounds();
+	const ShapeBounds bounds = getBounds();
 	
 	offsetX = -bounds.minX;
 	switch(yAlignment)

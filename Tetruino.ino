@@ -3,18 +3,17 @@
 
 #include "Game.hpp"
 #include "Bounds.hpp"
-#include "Block.hpp"
 
 using namespace Tetruino;
 
-Game game(Bounds { 8, 32 });
+Game gameInstance(Bounds { 8, 32 });
 
 void setup()
 {
-	game.setup();
+	gameInstance.setup();
 }
 
 void loop()
 {
-	game.loop();
+	gameInstance.loop();
 }

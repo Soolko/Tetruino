@@ -1,9 +1,8 @@
 #ifndef TETRUINO_GAME_HPP
 #define TETRUINO_GAME_HPP
 
-#include "World.hpp"
 #include "Renderer.hpp"
-#include "FallingBlock.hpp"
+#include "World.hpp"
 
 namespace Tetruino
 {
@@ -15,6 +14,8 @@ namespace Tetruino
 		
 		void setup();
 		void loop();
+		
+		void onInput();
 	private:
 		// Core objects
 		Renderer renderer;
@@ -22,13 +23,14 @@ namespace Tetruino
 		
 		// Block randomization
 		const Block* nextBlock;
-		FallingBlock* currentBlock;
+		Block* currentBlock;
 		
 		void pickNextBlock();
 		const Block* getBlock(unsigned char id);
 		const Block* getRandomBlock();
 		
 		// Rendering
+		void renderCurrentBlock();
 		void renderNextBlock();
 	};
 }

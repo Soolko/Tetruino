@@ -1,38 +1,35 @@
 #ifndef TETRUINO_BLOCK_HPP
 #define TETRUINO_BLOCK_HPP
 
-#include "BoolArray.hpp"
 #include "Colour.hpp"
+#include "BoolArray.hpp"
 
 namespace Tetruino
 {
-	class Block
+	struct Block
 	{
-	public:
 		enum class YAlignment : char { up = 1, down = -1 };
 		
-		Block(unsigned char size, YAlignment yAlignment, const BoolArray& baseShape, const Colour colour);
-		Block(const Block& other);
+		Block(unsigned char size, YAlignment yAlignment, BoolArray shape, Colour colour, int x = 0, int y = 0);
 		
 		const unsigned char size;
+		const YAlignment yAlignment;
 		const Colour colour;
 		BoolArray shape;
 		
-		void rotateLeft();
-		void rotateRight();
-		
-		struct Bounds
+		struct ShapeBounds
 		{
 			unsigned char minX; unsigned char maxX;
 			unsigned char minY; unsigned char maxY;
 		};
-		Bounds getBounds() const;
+		ShapeBounds getBounds() const;
 		
-		char getOffsetX() const; char getOffsetY() const;
-	protected:
-		const YAlignment yAlignment;
+		int x, y;
 		char offsetX, offsetY;
 		
+		void rotateLeft();
+		void rotateRight();
+	private:
 		void calculateOffset();
 	};
 	

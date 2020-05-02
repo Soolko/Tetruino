@@ -1,10 +1,12 @@
 #include "Renderer.hpp"
 #include <FastLED.h>
 
+#include <Arduino.h>
+
 using namespace Tetruino;
 
 // Set pin here
-constexpr unsigned char OutputPin = 3;
+constexpr uint8_t OutputPin = 3;
 #define FLIP_EVEN
 
 Renderer::Renderer(const Bounds& bounds) : bounds(bounds)
@@ -39,8 +41,8 @@ void Renderer::drawBlock
 		if(!block.shape.get(blockX + (blockY * block.size))) continue;
 		
 		// Get final coordú
-		const int bufferX = blockX + x + block.getOffsetX();
-		const int bufferY = blockY + y + block.getOffsetY();
+		const int bufferX = blockX + x + block.offsetX;
+		const int bufferY = blockY + y + block.offsetY;
 		
 		// Bounds checks
 		if(bufferX < 0 || bufferY < 0) continue;

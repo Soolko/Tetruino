@@ -13,16 +13,16 @@ void Game::setup()
 	// Random pin
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(A0, INPUT);
-	randomSeed(digitalRead(A0));
+	randomSeed(analogRead(A0));
 	
 	// Create first blocks
 	nextBlock = getRandomBlock();
-	
-	pickNextBlock();
+	currentBlock = new Block(*getRandomBlock());
 }
 
 void Game::loop()
 {
+	renderCurrentBlock();
 	renderNextBlock();
 	renderer.draw();
 	
@@ -33,10 +33,15 @@ void Game::loop()
 	pickNextBlock();
 }
 
+void Game::renderCurrentBlock()
+{
+	renderer.drawBlock(*currentBlock, 3, 3);
+}
+
 void Game::renderNextBlock()
 {
-	const Block::Bounds bounds = nextBlock->getBounds();
-	const unsigned char blockWidth = bounds.maxX - bounds.minX;
+	const Block::ShapeBounds shapeBounds = nextBlock->getBounds();
+	const unsigned char blockWidth = shapeBounds.maxX - shapeBounds.minX;
 	
 	renderer.drawBlock
 	(
@@ -50,6 +55,8 @@ void Game::renderNextBlock()
 void Game::pickNextBlock()
 {
 	// Replace next block
+	delete currentBlock;
+	currentBlock = new Block(*nextBlock);
 	nextBlock = getRandomBlock();
 }
 

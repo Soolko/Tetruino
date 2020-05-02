@@ -3,50 +3,32 @@
 
 namespace Tetruino
 {
-	template<typename T> class VectorEntry final
+	template<typename T> struct Vector final
 	{
-	public:
-		VectorEntry(T initial) : data(initial) {}
-		~VectorEntry()
+		Vector(const T value) : value(value) {}
+		~Vector()
 		{
-			// Should recurse as it calls the destructor for the next one in the vector.
 			if(next != nullptr) delete next;
 		}
 		
-		T data;
-		VectorEntry<T>* next = nullptr;
+		T value;
 		
-		void add(T data)
+		void add(const T item)
 		{
-			next = new VectorEntry(data);
-		}
-	};
-	
-	template<typename T> class Vector final
-	{
-	public:
-		Vector(T initial) : vector(initial) {}
-		
-		void add(T object)
-		{
-			getEndPointer()->add(object);
+			next = new Vector<T>(item);
 		}
 		
-		VectorEntry<T>* getEndPointer()
+		T& operator[](const unsigned short index)
 		{
-			VectorEntry<T>* current = &vector;
-			while(current->next != nullptr) current = current->next;
-			return current;
-		}
-		
-		const T& operator[](unsigned int index) const
-		{
-			VectorEntry<T>* current = &vector;
-			for(unsigned int i = 0; i < index; i++) current = current->next;
-			return *current;
+			Vector* current = this;
+			unsigned short currentIndex = 0;
+			
+			while(currentIndex++ < index) current = next;
+			
+			return current->value;
 		}
 	private:
-		VectorEntry<T> vector;
+		Vector<T>* next;
 	};
 }
 
