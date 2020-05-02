@@ -16,6 +16,12 @@ BoolArray::BoolArray(const unsigned long size, const uint8_t state[]) : size(siz
 	}
 }
 
+BoolArray::BoolArray(const BoolArray& other) : size(other.size), arrayBytesCount(other.arrayBytesCount)
+{
+	arrayBytes = new uint8_t[arrayBytesCount];
+	for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = other.arrayBytes[i];
+}
+
 BoolArray::~BoolArray()
 {
 	delete[] arrayBytes;

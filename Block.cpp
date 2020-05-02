@@ -2,7 +2,7 @@
 
 using namespace Tetruino;
 
-Block::Block(const unsigned char size, const YAlignment yAlignment, const BoolArray shape, const Colour colour, const int x, const int y):
+Block::Block(const unsigned char size, const YAlignment yAlignment, const BoolArray& shape, const Colour& colour, const int x, const int y):
 	size(size), yAlignment(yAlignment), shape(shape), colour(colour), x(x), y(y)
 {
 	calculateOffset();

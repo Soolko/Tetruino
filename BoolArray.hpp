@@ -9,6 +9,7 @@ namespace Tetruino
 	{
 	public:
 		BoolArray(unsigned long size, const uint8_t state[] = nullptr);
+		BoolArray(const BoolArray& other);
 		~BoolArray();
 		
 		unsigned long getSize();
