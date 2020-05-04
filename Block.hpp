@@ -11,6 +11,7 @@ namespace Tetruino
 		enum class YAlignment : char { up = 1, down = -1 };
 		
 		Block(unsigned char size, YAlignment yAlignment, const BoolArray& shape, const Colour& colour, int x = 0, int y = 0);
+		Block(const Block& other);
 		
 		const unsigned char size;
 		const YAlignment yAlignment;
@@ -21,6 +22,9 @@ namespace Tetruino
 		{
 			unsigned char minX; unsigned char maxX;
 			unsigned char minY; unsigned char maxY;
+			
+			unsigned char getWidth();
+			unsigned char getHeight();
 		};
 		ShapeBounds getBounds() const;
 		

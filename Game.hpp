@@ -21,6 +21,10 @@ namespace Tetruino
 		Renderer renderer;
 		World world;
 		
+		// Game loop
+		unsigned long timer = 0;
+		unsigned long lastTime = 0;
+		
 		// Block randomization
 		const Block* nextBlock;
 		Block* currentBlock;
@@ -30,6 +34,8 @@ namespace Tetruino
 		const Block* getRandomBlock();
 		
 		// Rendering
+		void render();
+		void renderWorldStatic();
 		void renderCurrentBlock();
 		void renderNextBlock();
 	};

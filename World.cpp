@@ -7,17 +7,29 @@ World::~World()
 	if(blocks != nullptr) delete blocks;
 }
 
-void World::addBlock(const Block block)
+void World::addBlock(const Block& block)
 {
-	const BlockEntry entry
-	{
-		block.colour,
-		block.shape,
-		block.x, block.y
-	};
+	// Add to vector
+	if(blocks != nullptr) blocks->add(block);
+	else blocks = new Vector<Block>(block);
 	
-	if(blocks != nullptr) blocks->add(entry);
-	else blocks = new Vector<BlockEntry>(entry);
+	const int blockPosX = block.x + block.offsetX;
+	const int blockPosY = block.y + block.offsetY;
+	
+	// Add to collision map
+	for(unsigned char blockX = 0; blockX < block.size; blockX++)
+	for(unsigned char blockY = 0; blockY < block.size; blockY++)
+	{
+		if(block.shape.get(blockX + (blockY * block.size)))
+		{
+			const unsigned char collisionX = (blockPosX + blockX);
+			const unsigned char collisionY = (blockPosY + blockY);
+			if(collisionX > bounds.width) continue;
+			if(collisionY > bounds.height) continue;
+			
+			collisionMap.set(collisionX + (collisionY * bounds.width), true);
+		}
+	}
 }
 
 /* 
@@ -33,10 +45,10 @@ uint8_t World::isColliding(const Block& block) const
 	bool bottom = false;
 	
 	// Quick side checks
-	if((char) blockBounds.minX - 1 < 0) left = true;
-	if((char) blockBounds.minY - 1 < 0) top = true;
-	if((short) blockBounds.maxX + 1 >= bounds.width) right = true;
-	if((short) blockBounds.maxY + 1 >= bounds.height) bottom = true;
+	if(block.x + (char) blockBounds.minX - 1 < 0) left = true;
+	if(block.y + (char) blockBounds.minY - 1 < 0) top = true;
+	if(block.x + (short) blockBounds.maxX + 1 >= bounds.width) right = true;
+	if(block.y + (short) blockBounds.maxY + 1 >= bounds.height) bottom = true;
 	
 	/*
 		In-depth collision map check
@@ -50,53 +62,8 @@ uint8_t World::isColliding(const Block& block) const
 		int worldX = block.x + block.offsetX + shapeX;
 		int worldY = block.y + block.offsetY + shapeY;
 		
-		// Left
-		if(shapeX == blockBounds.minX)
-		{
-			worldX--;
-			
-			if(worldX < 0) goto leftCheckEnd;
-			if(collisionMap.get(worldX + (worldY * bounds.width)))
-			{
-				// Hit a block to the left
-				left = true;
-			}
-			
-		leftCheckEnd:
-			worldX++;
-		}
-		
-		// Right
-		if(shapeX == blockBounds.maxX)
-		{
-			worldX++;
-			
-			if(worldX > bounds.width) goto rightCheckEnd;
-			if(collisionMap.get(worldX + (worldY * bounds.width)))
-			{
-				// Hit a block to the right
-				right = true;
-			}
-			
-		rightCheckEnd:
-			worldX--;
-		}
-		
 		// Down
-		if(shapeY == blockBounds.maxY)
-		{
-			worldY++;
-			
-			if(worldY > bounds.height) goto downCheckEnd;
-			if(collisionMap.get(worldX + (worldY * bounds.width)))
-			{
-				// Hit a block downwards
-				bottom = true;
-			}
-			
-		downCheckEnd:
-			worldY--;
-		}
+		if(collisionMap.get(shapeX + (shapeY - 1) * bounds.width)) bottom = true;
 	}
 	
 	// Combine into bitmask

@@ -19,6 +19,7 @@ namespace Tetruino
 		Renderer(const Bounds& bounds);
 		~Renderer();
 		
+		void drawPixel(int x, int y, Colour colour);
 		void drawBlock
 		(
 			const Block& block,

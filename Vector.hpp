@@ -5,30 +5,21 @@ namespace Tetruino
 {
 	template<typename T> struct Vector final
 	{
-		Vector(const T value) : value(value) {}
+		T value;
+		Vector<T>* next;
+		
+		Vector(const T value) : value(value), next(nullptr) {}
 		~Vector()
 		{
 			if(next != nullptr) delete next;
 		}
 		
-		T value;
-		
-		void add(const T item)
+		void add(const T& item)
 		{
-			next = new Vector<T>(item);
+			Vector<T>* current = this;
+			while(current->next != nullptr) current = current->next;
+			current->next = new Vector<T>(item);
 		}
-		
-		T& operator[](const unsigned short index)
-		{
-			Vector* current = this;
-			unsigned short currentIndex = 0;
-			
-			while(currentIndex++ < index) current = next;
-			
-			return current->value;
-		}
-	private:
-		Vector<T>* next;
 	};
 }
 

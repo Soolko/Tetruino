@@ -22,6 +22,14 @@ BoolArray::BoolArray(const BoolArray& other) : size(other.size), arrayBytesCount
 	for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = other.arrayBytes[i];
 }
 
+BoolArray& BoolArray::operator=(const BoolArray& other)
+{
+	arrayBytesCount = other.arrayBytesCount;
+	delete[] arrayBytes;
+	arrayBytes = new uint8_t[arrayBytesCount];
+	for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = other.arrayBytes[i];
+}
+
 BoolArray::~BoolArray()
 {
 	delete[] arrayBytes;

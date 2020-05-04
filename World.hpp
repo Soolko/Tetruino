@@ -15,9 +15,8 @@ namespace Tetruino
 		World(const Bounds& bounds) : bounds(bounds), collisionMap(bounds.getGridCount()), blocks(nullptr) {}
 		~World();
 		
-		const Bounds bounds;
-		
-		void addBlock(Block block);
+		Vector<Block>* blocks;
+		void addBlock(const Block& block);
 		
 		enum class CollisionStatus : uint8_t
 		{
@@ -28,17 +27,9 @@ namespace Tetruino
 			right	= 0b1000
 		};
 		
+		const Bounds bounds;
 		uint8_t isColliding(const Block& block) const;
 	private:
-		struct BlockEntry
-		{
-			Colour colour;
-			BoolArray shape;
-			
-			int x, y;
-		};
-		
-		Vector<BlockEntry>* blocks;
 		BoolArray collisionMap;
 	};
 }

@@ -8,20 +8,24 @@ Block::Block(const unsigned char size, const YAlignment yAlignment, const BoolAr
 	calculateOffset();
 }
 
+Block::Block(const Block& other):
+	size(other.size), yAlignment(other.yAlignment), shape(other.shape), colour(other.colour), x(other.x), y(other.y)
+{
+	calculateOffset();
+}
+
 // Translation/Rotation
 void Block::rotateLeft()
 {
 	BoolArray output(size * size);
 	
 	for(unsigned char x = 0; x < size; x++)
+	for(unsigned char y = 0; y < size; y++)
 	{
-		for(unsigned char y = 0; y < size; y++)
-		{
-			const unsigned int newX = size - y - 1;
-			const unsigned int newY = x;
-			
-			output.set((y * size) + x, shape.get((newY * size) + newX));
-		}
+		const unsigned int newX = size - y - 1;
+		const unsigned int newY = x;
+		
+		output.set((y * size) + x, shape.get((newY * size) + newX));
 	}
 	
 	// Copy array
@@ -34,14 +38,12 @@ void Block::rotateRight()
 	BoolArray output(size * size);
 	
 	for(unsigned char x = 0; x < size; x++)
+	for(unsigned char y = 0; y < size; y++)
 	{
-		for(unsigned char y = 0; y < size; y++)
-		{
-			const unsigned int newX = y;
-			const unsigned int newY = size - x - 1;
-			
-			output.set((y * size) + x, shape.get((newY * size) + newX));
-		}
+		const unsigned int newX = y;
+		const unsigned int newY = size - x - 1;
+		
+		output.set((y * size) + x, shape.get((newY * size) + newX));
 	}
 	
 	// Copy array
@@ -85,6 +87,9 @@ void Block::calculateOffset()
 		break;
 	}
 }
+
+unsigned char Block::ShapeBounds::getWidth()	{ return (maxX - minX) + 1; }
+unsigned char Block::ShapeBounds::getHeight()	{ return (maxY - minY) + 1; }
 
 /*
 	Definitions

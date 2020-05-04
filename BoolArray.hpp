@@ -19,7 +19,7 @@ namespace Tetruino
 		
 		void clear();
 		
-		BoolArray& operator=(const BoolArray& other) = delete;
+		BoolArray& operator=(const BoolArray& other);
 	protected:
 		unsigned long size;
 		
