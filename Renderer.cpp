@@ -58,7 +58,7 @@ void Renderer::drawBlock
 		const int bufferIndex = bufferX + (bufferY * bounds.width);
 		if(bufferIndex > bounds.getGridCount()) return;
 		
-		const Colour finalColour = customColour ? colour : block.colour;
+		const Colour finalColour = customColour ? colour : *block.colour;
 		if(!additive) buffer[bufferIndex] = finalColour;
 		else
 		{
@@ -68,6 +68,16 @@ void Renderer::drawBlock
 			oldColour.b += finalColour.b;
 			buffer[bufferIndex] = oldColour;
 		}
+	}
+}
+
+void Renderer::drawMap(const Colour** map, const Bounds& bounds)
+{
+	for(unsigned short i = 0; i < bounds.getGridCount(); i++)
+	{
+		// Avoid buffer overflow
+		if(i >= this->bounds.getGridCount()) return;
+		buffer[i] = *map[i];
 	}
 }
 

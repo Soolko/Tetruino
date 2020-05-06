@@ -6,7 +6,7 @@ namespace Tetruino
 	struct Bounds
 	{
 		unsigned char width, height;
-		unsigned int getGridCount() const;
+		unsigned short getGridCount() const;
 	};
 }
 

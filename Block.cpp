@@ -2,7 +2,7 @@
 
 using namespace Tetruino;
 
-Block::Block(const unsigned char size, const YAlignment yAlignment, const BoolArray& shape, const Colour& colour, const int x, const int y):
+Block::Block(const unsigned char size, const YAlignment yAlignment, const BoolArray& shape, const Colour* colour, const int x, const int y):
 	size(size), yAlignment(yAlignment), shape(shape), colour(colour), x(x), y(y)
 {
 	calculateOffset();
@@ -98,28 +98,35 @@ using YAlignment = Tetruino::Block::YAlignment;
 
 constexpr uint8_t IShapeRaw[] = { 0b00010001u, 0b00010001u };
 const BoolArray IShape(16, IShapeRaw);
-const Block Blocks::I = Block(4, YAlignment::up, IShape, Colour { 0, ColourBrightness, ColourBrightness });
+const Colour IColour = Colour { 0, ColourBrightness, ColourBrightness };
+const Block Blocks::I = Block(4, YAlignment::up, IShape, &IColour);
 
 constexpr uint8_t OShapeRaw[] = { 0b1111u };
 const BoolArray OShape(4, OShapeRaw);
-const Block Blocks::O = Block(2, YAlignment::down, OShape, Colour { ColourBrightness, ColourBrightness, 0 });
+const Colour OColour = Colour { ColourBrightness, ColourBrightness, 0 };
+const Block Blocks::O = Block(2, YAlignment::down, OShape, &OColour);
 
 constexpr uint8_t TShapeRaw[] = { 0b00010111u, 0b0u };
 const BoolArray TShape(9, TShapeRaw);
-const Block Blocks::T = Block(3, YAlignment::up, TShape, Colour { ColourBrightness, 0, ColourBrightness });
+const Colour TColour = Colour { ColourBrightness, 0, ColourBrightness };
+const Block Blocks::T = Block(3, YAlignment::up, TShape, &TColour);
 
 constexpr uint8_t SShapeRaw[] = { 0b00011110u, 0b0u };
 const BoolArray SShape(9, SShapeRaw);
-const Block Blocks::S = Block(3, YAlignment::up, SShape, Colour { 0, ColourBrightness, 0 });
+const Colour SColour = Colour { 0, ColourBrightness, 0 };
+const Block Blocks::S = Block(3, YAlignment::up, SShape, &SColour);
 
 constexpr uint8_t ZShapeRaw[] = { 0b00110011u, 0b0u };
 const BoolArray ZShape(9, ZShapeRaw);
-const Block Blocks::Z = Block(3, YAlignment::up, ZShape, Colour { ColourBrightness, 0, 0 });
+const Colour ZColour = Colour { ColourBrightness, 0, 0 };
+const Block Blocks::Z = Block(3, YAlignment::up, ZShape, &ZColour);
 
 constexpr uint8_t JShapeRaw[] = { 0b00111001u, 0b0u };
 const BoolArray JShape(9, JShapeRaw);
-const Block Blocks::J = Block(3, YAlignment::up, JShape, Colour { 0, 0, ColourBrightness });
+const Colour JColour = Colour { 0, 0, ColourBrightness };
+const Block Blocks::J = Block(3, YAlignment::up, JShape, &JColour);
 
 constexpr uint8_t LShapeRaw[] = { 0b00111100u, 0b0u };
 const BoolArray LShape(9, LShapeRaw);
-const Block Blocks::L = Block(3, YAlignment::up, LShape, { ColourBrightness, ColourBrightness / 4, 0 });
+const Colour LColour = { ColourBrightness, ColourBrightness / 4, 0 };
+const Block Blocks::L = Block(3, YAlignment::up, LShape, &LColour);

@@ -2,21 +2,23 @@
 
 using namespace Tetruino;
 
+World::World(const Bounds& bounds) : bounds(bounds)
+{
+	blockMap = new const Colour*[bounds.getGridCount()];
+	for(unsigned short i = 0; i < bounds.getGridCount(); i++) blockMap[i] = nullptr;
+}
+
 World::~World()
 {
-	if(blocks != nullptr) delete blocks;
+	delete[] blockMap;
 }
 
 void World::addBlock(const Block& block)
 {
-	// Add to vector
-	if(blocks != nullptr) blocks->add(block);
-	else blocks = new Vector<Block>(block);
-	
 	const int blockPosX = block.x + block.offsetX;
 	const int blockPosY = block.y + block.offsetY;
 	
-	// Add to collision map
+	// Add to world map
 	for(unsigned char blockX = 0; blockX < block.size; blockX++)
 	for(unsigned char blockY = 0; blockY < block.size; blockY++)
 	{
@@ -27,7 +29,7 @@ void World::addBlock(const Block& block)
 			if(collisionX > bounds.width) continue;
 			if(collisionY > bounds.height) continue;
 			
-			collisionMap.set(collisionX + (collisionY * bounds.width), true);
+			blockMap[collisionX + (collisionY * bounds.width)] = block.colour;
 		}
 	}
 }
@@ -63,7 +65,7 @@ uint8_t World::isColliding(const Block& block) const
 		int worldY = block.y + block.offsetY + shapeY;
 		
 		// Down
-		if(collisionMap.get(shapeX + (shapeY - 1) * bounds.width)) bottom = true;
+		if(blockMap[shapeX + (shapeY - 1) * bounds.width] == nullptr) bottom = true;
 	}
 	
 	// Combine into bitmask

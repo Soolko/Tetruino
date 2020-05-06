@@ -3,7 +3,6 @@
 
 #include "Block.hpp"
 #include "Bounds.hpp"
-#include "Vector.hpp"
 
 #include <Arduino.h>
 
@@ -12,11 +11,11 @@ namespace Tetruino
 	struct World final
 	{
 	public:
-		World(const Bounds& bounds) : bounds(bounds), collisionMap(bounds.getGridCount()), blocks(nullptr) {}
+		World(const Bounds& bounds);
 		~World();
 		
-		Vector<Block>* blocks;
-		void addBlock(const Block& block);
+		const Bounds bounds;
+		const Colour** blockMap;
 		
 		enum class CollisionStatus : uint8_t
 		{
@@ -27,10 +26,8 @@ namespace Tetruino
 			right	= 0b1000
 		};
 		
-		const Bounds bounds;
+		void addBlock(const Block& block);
 		uint8_t isColliding(const Block& block) const;
-	private:
-		BoolArray collisionMap;
 	};
 }
 

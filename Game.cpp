@@ -2,7 +2,6 @@
 #include "Block.hpp"
 
 #include <Arduino.h>
-#include <MemoryFree.h>
 
 using namespace Tetruino;
 
@@ -64,13 +63,7 @@ void Game::render()
 
 void Game::renderWorldStatic()
 {
-	Vector<Block>* current = world.blocks;
-	
-	while(current != nullptr)
-	{
-		renderer.drawBlock(current->value, current->value.x, current->value.y);
-		current = current->next;
-	}
+	renderer.drawMap(world.blockMap, world.bounds);
 }
 
 void Game::renderCurrentBlock()

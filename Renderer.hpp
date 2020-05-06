@@ -5,11 +5,7 @@
 #include "Bounds.hpp"
 #include "Block.hpp"
 
-#ifndef LEDType
 #define LEDType NEOPIXEL
-#else
-#error Two renderers are defined, this is not good and will die probably maybe.
-#endif
 
 namespace Tetruino
 {
@@ -27,6 +23,7 @@ namespace Tetruino
 			bool customColour = false, Colour colour = Colour { 0, 0, 0 },
 			bool additive = false
 		);
+		void drawMap(const Colour** map, const Bounds& bounds);
 		
 		void draw();
 		void clear();

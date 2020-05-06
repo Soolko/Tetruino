@@ -10,13 +10,14 @@ namespace Tetruino
 	{
 		enum class YAlignment : char { up = 1, down = -1 };
 		
-		Block(unsigned char size, YAlignment yAlignment, const BoolArray& shape, const Colour& colour, int x = 0, int y = 0);
+		Block(unsigned char size, YAlignment yAlignment, const BoolArray& shape, const Colour* colour, int x = 0, int y = 0);
 		Block(const Block& other);
 		
 		const unsigned char size;
 		const YAlignment yAlignment;
-		const Colour colour;
+		
 		BoolArray shape;
+		const Colour* colour;
 		
 		struct ShapeBounds
 		{

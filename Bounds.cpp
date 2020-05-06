@@ -2,7 +2,7 @@
 
 using namespace Tetruino;
 
-unsigned int Bounds::getGridCount() const
+unsigned short Bounds::getGridCount() const
 {
 	return width * height;
 }

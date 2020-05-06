@@ -9,7 +9,7 @@ namespace Tetruino
 	class Game final
 	{
 	public:
-		Game::Game(const Bounds& bounds) : renderer(bounds), world(bounds) {}
+		Game(const Bounds& bounds) : renderer(bounds), world(bounds) {}
 		~Game();
 		
 		void setup();
