@@ -28,18 +28,28 @@ void Game::setup()
 
 void Game::loop()
 {
-	render();
+	// Timer stuff
+	timer += micros() - lastTime;
+	lastTime = micros();
 	
-	// Drop block
-	if(world.hitBottom(*currentBlock))
+	// Update block every second
+	if(timer >= 100000)
 	{
-		// Hit bottom
-		world.addBlock(*currentBlock);
-		pickNextBlock();
+		// Drop block
+		if(world.hitBottom(*currentBlock))
+		{
+			// Hit bottom
+			world.addBlock(*currentBlock);
+			pickNextBlock();
+		}
+		else currentBlock->y++;
+		
+		// Reset timer
+		timer = 0;
 	}
-	else currentBlock->y++;
-
-	delay(500);
+	
+	// Always render
+	render();
 }
 
 void Game::render()
