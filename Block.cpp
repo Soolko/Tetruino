@@ -73,23 +73,23 @@ Block::ShapeBounds Block::getBounds() const
 
 void Block::calculateOffset()
 {
-	const ShapeBounds bounds = getBounds();
+	const Block::ShapeBounds bounds = getBounds();
 	
 	offsetX = -bounds.minX;
 	switch(yAlignment)
 	{
 	default:
-	case YAlignment::down:
-		offsetY = size - (bounds.maxY + 1);
-		break;
-	case YAlignment::up:
-		offsetY = -bounds.minY;
-		break;
+		case YAlignment::down:
+			offsetY = size - (bounds.maxY + 1);
+			break;
+		case YAlignment::up:
+			offsetY = -bounds.minY;
+			break;
 	}
 }
 
-unsigned char Block::ShapeBounds::getWidth()	{ return (maxX - minX) + 1; }
-unsigned char Block::ShapeBounds::getHeight()	{ return (maxY - minY) + 1; }
+unsigned char Block::ShapeBounds::getWidth()	const { return (maxX - minX) + 1; }
+unsigned char Block::ShapeBounds::getHeight()	const { return (maxY - minY) + 1; }
 
 /*
 	Definitions

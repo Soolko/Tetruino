@@ -28,26 +28,18 @@ void Game::setup()
 
 void Game::loop()
 {
-	timer += micros() - lastTime;
-	lastTime = micros();
+	render();
 	
-	constexpr unsigned long forcedUpdatePeriod = 100000;
-	
-	if(timer >= forcedUpdatePeriod) // Force an update after 1 second
+	// Drop block
+	if(world.hitBottom(*currentBlock))
 	{
-		currentBlock->y++;
-		render();
-		
-		timer -= forcedUpdatePeriod;
-	}
-	
-	if(world.isColliding(*currentBlock) & (uint8_t) World::CollisionStatus::bottom)
-	{
-		// Hit something, next block
+		// Hit bottom
 		world.addBlock(*currentBlock);
 		pickNextBlock();
-		timer = 0;
 	}
+	else currentBlock->y++;
+
+	delay(500);
 }
 
 void Game::render()
@@ -95,9 +87,9 @@ void Game::pickNextBlock()
 	nextBlock = getRandomBlock();
 }
 
-const Block* Game::getBlock(const unsigned char index)
+const Block* Game::getRandomBlock()
 {
-	switch(index)
+	switch(random(Blocks::blockCount))
 	{
 		default:
 		case 0: return &Blocks::I;
@@ -109,5 +101,3 @@ const Block* Game::getBlock(const unsigned char index)
 		case 6: return &Blocks::L;
 	}
 }
-
-const Block* Game::getRandomBlock() { return getBlock(random(Blocks::blockCount)); }

@@ -77,7 +77,7 @@ void Renderer::drawMap(const Colour** map, const Bounds& bounds)
 	{
 		// Avoid buffer overflow
 		if(i >= this->bounds.getGridCount()) return;
-		buffer[i] = *map[i];
+		if(map[i] != nullptr) buffer[i] = *map[i];
 	}
 }
 

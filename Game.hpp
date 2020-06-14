@@ -30,7 +30,6 @@ namespace Tetruino
 		Block* currentBlock;
 		
 		void pickNextBlock();
-		const Block* getBlock(unsigned char id);
 		const Block* getRandomBlock();
 		
 		// Rendering
@@ -38,6 +37,8 @@ namespace Tetruino
 		void renderWorldStatic();
 		void renderCurrentBlock();
 		void renderNextBlock();
+
+		void dropBlock();
 	};
 }
 

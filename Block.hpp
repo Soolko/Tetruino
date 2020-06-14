@@ -24,8 +24,8 @@ namespace Tetruino
 			unsigned char minX; unsigned char maxX;
 			unsigned char minY; unsigned char maxY;
 			
-			unsigned char getWidth();
-			unsigned char getHeight();
+			unsigned char getWidth() const;
+			unsigned char getHeight() const;
 		};
 		ShapeBounds getBounds() const;
 		

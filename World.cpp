@@ -34,50 +34,25 @@ void World::addBlock(const Block& block)
 	}
 }
 
-/* 
- * Like all collision code, this is an absolute mess.
- */
-uint8_t World::isColliding(const Block& block) const
+bool World::hitBottom(const Block& block)
 {
 	const Block::ShapeBounds blockBounds = block.getBounds();
-	
-	bool left = false;
-	bool right = false;
-	bool top = false;
-	bool bottom = false;
-	
-	// Quick side checks
-	if(block.x + (char) blockBounds.minX - 1 < 0) left = true;
-	if(block.y + (char) blockBounds.minY - 1 < 0) top = true;
-	if(block.x + (short) blockBounds.maxX + 1 >= bounds.width) right = true;
-	if(block.y + (short) blockBounds.maxY + 1 >= bounds.height) bottom = true;
-	
-	/*
-		In-depth collision map check
-	 */
-	for(unsigned char shapeY = blockBounds.minY; shapeY <= blockBounds.maxY; shapeY++)
-	for(unsigned char shapeX = blockBounds.minX; shapeX <= blockBounds.maxX; shapeX++)
+
+	for(short y = blockBounds.maxY; y >= 0; y--)
+	for(unsigned char x = 0; x <= blockBounds.maxX; x++)
 	{
-		// Continue if shape is not at position
-		if(!block.shape.get(shapeX + (shapeY * block.size))) continue;
-		
-		int worldX = block.x + block.offsetX + shapeX;
-		int worldY = block.y + block.offsetY + shapeY;
-		
-		// Down
-		if(blockMap[shapeX + (shapeY - 1) * bounds.width] == nullptr) bottom = true;
+		if(block.shape.get(x + (y * block.size)))
+		{
+			// This part of the block exists
+			const int worldX = block.x + x;
+			const int worldY = block.y + y + 1;
+			
+			const int index = worldX + (worldY * bounds.width);
+			if(index < 0) continue;
+			if(index > bounds.width * bounds.height) return true;
+
+			if(blockMap[index] != nullptr) return true;
+		}
 	}
-	
-	// Combine into bitmask
-	uint8_t output = 0;
-	if(!(left || right || top || bottom)) output = (uint8_t) CollisionStatus::none;
-	else
-	{
-		if(left)	output += (uint8_t) CollisionStatus::left;
-		if(right)	output += (uint8_t) CollisionStatus::right;
-		if(top)		output += (uint8_t) CollisionStatus::top;
-		if(bottom)	output += (uint8_t) CollisionStatus::bottom;
-	}
-	
-	return output;
+	return false;
 }
