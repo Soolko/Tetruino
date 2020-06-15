@@ -37,7 +37,7 @@ void World::addBlock(const Block& block)
 bool World::hitBottom(const Block& block)
 {
 	const Block::ShapeBounds blockBounds = block.getBounds();
-
+	
 	for(short y = blockBounds.maxY; y >= 0; y--)
 	for(unsigned char x = 0; x <= blockBounds.maxX; x++)
 	{
@@ -46,11 +46,13 @@ bool World::hitBottom(const Block& block)
 			// This part of the block exists
 			const int worldX = block.x + x;
 			const int worldY = block.y + y + 1;
-			
 			const int index = worldX + (worldY * bounds.width);
+			
+			// Bounds check
 			if(index < 0) continue;
 			if(index > bounds.width * bounds.height) return true;
-
+			
+			// Actual block check
 			if(blockMap[index] != nullptr) return true;
 		}
 	}

@@ -45,7 +45,7 @@ void Renderer::drawBlock
 		// Next iteration if block doesn't exist at this point
 		if(!block.shape.get(blockX + (blockY * block.size))) continue;
 		
-		// Get final coordú
+		// Get final coords
 		const int bufferX = blockX + x + block.offsetX;
 		const int bufferY = blockY + y + block.offsetY;
 		
@@ -58,7 +58,7 @@ void Renderer::drawBlock
 		const int bufferIndex = bufferX + (bufferY * bounds.width);
 		if(bufferIndex > bounds.getGridCount()) return;
 		
-		const Colour finalColour = customColour ? colour : *block.colour;
+		const Colour finalColour = customColour ? colour : *(block.colour);
 		if(!additive) buffer[bufferIndex] = finalColour;
 		else
 		{

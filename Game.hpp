@@ -3,13 +3,14 @@
 
 #include "Renderer.hpp"
 #include "World.hpp"
+#include "Input.hpp"
 
 namespace Tetruino
 {
 	class Game final
 	{
 	public:
-		Game(const Bounds& bounds) : renderer(bounds), world(bounds) {}
+		Game(const Bounds& bounds, const Input::KeyMap& keymap) : renderer(bounds), world(bounds), input(keymap) {}
 		~Game();
 		
 		void setup();
@@ -20,6 +21,7 @@ namespace Tetruino
 		// Core objects
 		Renderer renderer;
 		World world;
+		Input input;
 		
 		// Game loop
 		unsigned long timer = 0;
@@ -37,8 +39,12 @@ namespace Tetruino
 		void renderWorldStatic();
 		void renderCurrentBlock();
 		void renderNextBlock();
-
+		
+		// Update
 		void dropBlock();
+		
+		// Tools
+		int centreBlockX(const Block& block) const;
 	};
 }
 

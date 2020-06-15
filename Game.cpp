@@ -20,7 +20,7 @@ void Game::setup()
 	// Create first blocks
 	nextBlock = getRandomBlock();
 	currentBlock = new Block(*getRandomBlock());
-	currentBlock->x = world.bounds.width / 2 - currentBlock->getBounds().getWidth();
+	currentBlock->x = centreBlockX(*currentBlock);
 	
 	render();
 	lastTime = micros();
@@ -47,6 +47,14 @@ void Game::loop()
 		// Reset timer
 		timer = 0;
 	}
+	
+	// Get Input
+	input.update();
+	
+	/* Flip these if you have issues */
+	if(input.left())	currentBlock->x++;
+	if(input.right())	currentBlock->x--;
+	if(input.rotate())	currentBlock->rotateRight();
 	
 	// Always render
 	render();
@@ -93,7 +101,7 @@ void Game::pickNextBlock()
 	// Replace next block
 	delete currentBlock;
 	currentBlock = new Block(*nextBlock);
-	currentBlock->x = world.bounds.width / 2 - currentBlock->getBounds().getWidth();
+	currentBlock->x = centreBlockX(*currentBlock);
 	nextBlock = getRandomBlock();
 }
 
@@ -111,3 +119,5 @@ const Block* Game::getRandomBlock()
 		case 6: return &Blocks::L;
 	}
 }
+
+int Game::centreBlockX(const Block& block) const { return (world.bounds.width / 2) - (block.getBounds().getWidth() / 2); }
