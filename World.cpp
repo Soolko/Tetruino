@@ -38,19 +38,21 @@ bool World::hitBottom(const Block& block)
 {
 	const Block::ShapeBounds blockBounds = block.getBounds();
 	
-	for(short y = blockBounds.maxY; y >= 0; y--)
-	for(unsigned char x = 0; x <= blockBounds.maxX; x++)
+	for(short y = block.size - 1; y >= 0; y--)
+	for(unsigned char x = 0; x <= block.size; x++)
 	{
+		// This part of the block exists
 		if(block.shape.get(x + (y * block.size)))
 		{
-			// This part of the block exists
-			const int worldX = block.x + x;
-			const int worldY = block.y + y + 1;
+			const int worldX = block.x + block.offsetX + x;
+			const int worldY = block.y + block.offsetY + y + 1;
 			const int index = worldX + (worldY * bounds.width);
 			
 			// Bounds check
-			if(index < 0) continue;
-			if(index > bounds.width * bounds.height) return true;
+			if(worldX < 0) continue;
+			if(worldY < 0) continue;
+			if(worldX >= bounds.width) continue;
+			if(worldY >= bounds.height) return true;
 			
 			// Actual block check
 			if(blockMap[index] != nullptr) return true;

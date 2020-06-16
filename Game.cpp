@@ -15,7 +15,6 @@ void Game::setup()
 	// Random pin
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(A0, INPUT);
-	randomSeed(analogRead(A0));
 	
 	// Create first blocks
 	nextBlock = getRandomBlock();

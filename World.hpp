@@ -18,6 +18,8 @@ namespace Tetruino
 		const Colour** blockMap;
 		
 		void addBlock(const Block& block);
+		size_t checkLines(unsigned char* lines);
+		
 		bool hitBottom(const Block& block);
 	};
 }

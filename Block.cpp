@@ -22,13 +22,14 @@ void Block::rotateLeft()
 	for(unsigned char x = 0; x < size; x++)
 	for(unsigned char y = 0; y < size; y++)
 	{
-		const unsigned int newX = size - y - 1;
-		const unsigned int newY = x;
+		const unsigned char newX = size - y - 1;
+		const unsigned char newY = x;
 		
 		output.set((y * size) + x, shape.get((newY * size) + newX));
 	}
 	
 	// Copy array
+	shape.clear();
 	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
 	calculateOffset();
 }
@@ -40,13 +41,14 @@ void Block::rotateRight()
 	for(unsigned char x = 0; x < size; x++)
 	for(unsigned char y = 0; y < size; y++)
 	{
-		const unsigned int newX = y;
-		const unsigned int newY = size - x - 1;
+		const unsigned char newX = y;
+		const unsigned char newY = size - x - 1;
 		
 		output.set((y * size) + x, shape.get((newY * size) + newX));
 	}
 	
 	// Copy array
+	shape.clear();
 	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
 	calculateOffset();
 }

@@ -27,7 +27,7 @@ namespace Tetruino
 			unsigned char getWidth() const;
 			unsigned char getHeight() const;
 		};
-		ShapeBounds getBounds() const;
+		Block::ShapeBounds getBounds() const;
 		
 		int x, y;
 		char offsetX, offsetY;

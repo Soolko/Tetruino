@@ -28,6 +28,7 @@ BoolArray& BoolArray::operator=(const BoolArray& other)
 	delete[] arrayBytes;
 	arrayBytes = new uint8_t[arrayBytesCount];
 	for(unsigned int i = 0; i < arrayBytesCount; i++) arrayBytes[i] = other.arrayBytes[i];
+	return *this;
 }
 
 BoolArray::~BoolArray()
