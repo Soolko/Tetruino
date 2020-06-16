@@ -1,7 +1,4 @@
 #include "Game.hpp"
-#include "Block.hpp"
-
-#include <Arduino.h>
 
 using namespace Tetruino;
 
@@ -35,10 +32,15 @@ void Game::loop()
 	if(timer >= 100000)
 	{
 		// Drop block
-		if(world.hitBottom(*currentBlock))
+		if(world.hitBottom(*currentBlock))	// Hit bottom
 		{
-			// Hit bottom
+			// Add block
 			world.addBlock(*currentBlock);
+			
+			// Clear
+			clearLines();
+			
+			// Select next
 			pickNextBlock();
 		}
 		else currentBlock->y++;
@@ -50,13 +52,37 @@ void Game::loop()
 	// Get Input
 	input.update();
 	
-	/* Flip these if you have issues */
-	if(input.left())	currentBlock->x++;
-	if(input.right())	currentBlock->x--;
+	/* Flip these if you want to. */
+	if(input.left())	currentBlock->x--;
+	if(input.right())	currentBlock->x++;
 	if(input.rotate())	currentBlock->rotateRight();
 	
 	// Always render
 	render();
+}
+
+inline void Game::clearLines()
+{
+	// Get the line numbers
+	uint8_t* lines;
+	uint8_t count = world.checkLines(lines);
+	
+	// Nothing to do
+	if(count == 0) return;
+	
+	for(uint8_t i = 0; i < count; i++)
+	{
+		// Display line
+		for(uint8_t x = 0; x < world.bounds.width; x++)
+		{
+			renderer.drawPixel(x, lines[i], Colour { ColourBrightness * 2, ColourBrightness * 2, ColourBrightness * 2 });
+			delay(50);
+		}
+		
+		// Reset renderer
+		render();
+	}
+	delete[] lines;
 }
 
 void Game::render()
@@ -70,17 +96,17 @@ void Game::render()
 	renderer.draw();
 }
 
-void Game::renderWorldStatic()
+inline void Game::renderWorldStatic()
 {
 	renderer.drawMap(world.blockMap, world.bounds);
 }
 
-void Game::renderCurrentBlock()
+inline void Game::renderCurrentBlock()
 {
 	renderer.drawBlock(*currentBlock, currentBlock->x, currentBlock->y);
 }
 
-void Game::renderNextBlock()
+inline void Game::renderNextBlock()
 {
 	constexpr unsigned char brightness = ColourBrightness / 4;
 	const Block::ShapeBounds shapeBounds = nextBlock->getBounds();
@@ -95,7 +121,7 @@ void Game::renderNextBlock()
 	);
 }
 
-void Game::pickNextBlock()
+inline void Game::pickNextBlock()
 {
 	// Replace next block
 	delete currentBlock;
@@ -104,7 +130,7 @@ void Game::pickNextBlock()
 	nextBlock = getRandomBlock();
 }
 
-const Block* Game::getRandomBlock()
+inline const Block* Game::getRandomBlock()
 {
 	switch(random(Blocks::blockCount))
 	{
@@ -119,4 +145,7 @@ const Block* Game::getRandomBlock()
 	}
 }
 
-int Game::centreBlockX(const Block& block) const { return (world.bounds.width / 2) - (block.getBounds().getWidth() / 2); }
+inline int Game::centreBlockX(const Block& block) const
+{
+	return (world.bounds.width / 2) - (block.getBounds().getWidth() / 2);
+}

@@ -8,12 +8,12 @@ namespace Tetruino
 {
 	struct Block
 	{
-		enum class YAlignment : char { up = 1, down = -1 };
+		enum class YAlignment : int8_t { up = 1, down = -1 };
 		
 		Block(unsigned char size, YAlignment yAlignment, const BoolArray& shape, const Colour* colour, int x = 0, int y = 0);
 		Block(const Block& other);
 		
-		const unsigned char size;
+		const uint8_t size;
 		const YAlignment yAlignment;
 		
 		BoolArray shape;
@@ -21,16 +21,16 @@ namespace Tetruino
 		
 		struct ShapeBounds
 		{
-			unsigned char minX; unsigned char maxX;
-			unsigned char minY; unsigned char maxY;
+			uint8_t minX; uint8_t maxX;
+			uint8_t minY; uint8_t maxY;
 			
-			unsigned char getWidth() const;
-			unsigned char getHeight() const;
+			uint8_t getWidth() const;
+			uint8_t getHeight() const;
 		};
 		Block::ShapeBounds getBounds() const;
 		
 		int x, y;
-		char offsetX, offsetY;
+		int8_t offsetX, offsetY;
 		
 		void rotateLeft();
 		void rotateRight();
@@ -40,7 +40,7 @@ namespace Tetruino
 	
 	namespace Blocks
 	{
-		static constexpr unsigned char blockCount = 7;
+		static constexpr uint8_t blockCount = 7;
 		
 		extern const Block I;
 		extern const Block O;

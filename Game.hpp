@@ -4,6 +4,9 @@
 #include "Renderer.hpp"
 #include "World.hpp"
 #include "Input.hpp"
+#include "Block.hpp"
+
+#include <Arduino.h>
 
 namespace Tetruino
 {
@@ -15,8 +18,6 @@ namespace Tetruino
 		
 		void setup();
 		void loop();
-		
-		void onInput();
 	private:
 		// Core objects
 		Renderer renderer;
@@ -31,20 +32,19 @@ namespace Tetruino
 		const Block* nextBlock;
 		Block* currentBlock;
 		
-		void pickNextBlock();
-		const Block* getRandomBlock();
+		inline void pickNextBlock();
+		inline const Block* getRandomBlock();
+		
+		inline void clearLines();
 		
 		// Rendering
 		void render();
-		void renderWorldStatic();
-		void renderCurrentBlock();
-		void renderNextBlock();
-		
-		// Update
-		void dropBlock();
+		inline void renderWorldStatic();
+		inline void renderCurrentBlock();
+		inline void renderNextBlock();
 		
 		// Tools
-		int centreBlockX(const Block& block) const;
+		inline int centreBlockX(const Block& block) const;
 	};
 }
 

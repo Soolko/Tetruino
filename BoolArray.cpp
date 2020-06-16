@@ -42,7 +42,7 @@ unsigned long BoolArray::getSize() { return size; }
 bool BoolArray::get(const unsigned long index) const
 {
 	const unsigned int arrayIndex = index / 8u;
-	const unsigned char byteIndex = index % 8u;
+	const uint8_t byteIndex = index % 8u;
 	
 	return (arrayBytes[arrayIndex] >> byteIndex) & 1;
 }
@@ -50,7 +50,7 @@ bool BoolArray::get(const unsigned long index) const
 void BoolArray::set(const unsigned long index, const bool value)
 {
 	const unsigned int arrayIndex = index / 8u;
-	const unsigned char byteIndex = index % 8u;
+	const uint8_t byteIndex = index % 8u;
 	
 	arrayBytes[arrayIndex] = arrayBytes[arrayIndex] & (0xff - (1 << byteIndex));
 	arrayBytes[arrayIndex] += (uint8_t) value << byteIndex;

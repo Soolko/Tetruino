@@ -39,8 +39,8 @@ void Renderer::drawBlock
 	const bool additive
 )
 {
-	for(unsigned char blockY = 0; blockY < block.size; blockY++)
-	for(unsigned char blockX = 0; blockX < block.size; blockX++)
+	for(uint8_t blockY = 0; blockY < block.size; blockY++)
+	for(uint8_t blockX = 0; blockX < block.size; blockX++)
 	{
 		// Next iteration if block doesn't exist at this point
 		if(!block.shape.get(blockX + (blockY * block.size))) continue;
@@ -88,7 +88,7 @@ void Renderer::draw()
 
 void Renderer::clear()
 {
-	for(unsigned int i = 0; i < bounds.getGridCount(); i++)
+	for(unsigned short i = 0; i < bounds.getGridCount(); i++)
 	{
 		// Set buffer to all black.
 		buffer[i] = Colour { 0, 0, 0 };
@@ -101,7 +101,7 @@ void Renderer::flipBuffer()
 	return;
 	#endif
 	
-	for(unsigned char y = 0; y < bounds.height; y++)
+	for(uint8_t y = 0; y < bounds.height; y++)
 	{
 		bool flip = false;
 		
@@ -118,13 +118,13 @@ void Renderer::flipBuffer()
 		
 		// Copy line to new array flipped
 		Colour* row = new Colour[bounds.width];
-		for(unsigned char x = 0; x < bounds.width; x++)
+		for(uint8_t x = 0; x < bounds.width; x++)
 		{
 			row[bounds.width - x - 1] = buffer[x + (y * bounds.width)];
 		}
 		
 		// Copy back
-		for(unsigned char x = 0; x < bounds.width; x++)
+		for(uint8_t x = 0; x < bounds.width; x++)
 		{
 			buffer[x + (y * bounds.width)] = row[x];
 		}

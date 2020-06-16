@@ -19,18 +19,18 @@ void Block::rotateLeft()
 {
 	BoolArray output(size * size);
 	
-	for(unsigned char x = 0; x < size; x++)
-	for(unsigned char y = 0; y < size; y++)
+	for(uint8_t x = 0; x < size; x++)
+	for(uint8_t y = 0; y < size; y++)
 	{
-		const unsigned char newX = size - y - 1;
-		const unsigned char newY = x;
+		const uint8_t newX = size - y - 1;
+		const uint8_t newY = x;
 		
 		output.set((y * size) + x, shape.get((newY * size) + newX));
 	}
 	
 	// Copy array
 	shape.clear();
-	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
+	for(uint8_t i = 0; i < size * size; i++) shape.set(i, output.get(i));
 	calculateOffset();
 }
 
@@ -38,18 +38,18 @@ void Block::rotateRight()
 {
 	BoolArray output(size * size);
 	
-	for(unsigned char x = 0; x < size; x++)
-	for(unsigned char y = 0; y < size; y++)
+	for(uint8_t x = 0; x < size; x++)
+	for(uint8_t y = 0; y < size; y++)
 	{
-		const unsigned char newX = y;
-		const unsigned char newY = size - x - 1;
+		const uint8_t newX = y;
+		const uint8_t newY = size - x - 1;
 		
 		output.set((y * size) + x, shape.get((newY * size) + newX));
 	}
 	
 	// Copy array
 	shape.clear();
-	for(unsigned char i = 0; i < size * size; i++) shape.set(i, output.get(i));
+	for(uint8_t i = 0; i < size * size; i++) shape.set(i, output.get(i));
 	calculateOffset();
 }
 
@@ -58,8 +58,8 @@ Block::ShapeBounds Block::getBounds() const
 	ShapeBounds bounds { size, 0, size, 0 };
 	
 	// Find bounds of actual shape
-	for(unsigned char y = 0; y < size; y++)
-	for(unsigned char x = 0; x < size; x++)
+	for(uint8_t y = 0; y < size; y++)
+	for(uint8_t x = 0; x < size; x++)
 	{
 		if(shape.get(x + (y * size)))
 		{
@@ -90,8 +90,8 @@ void Block::calculateOffset()
 	}
 }
 
-unsigned char Block::ShapeBounds::getWidth()	const { return (maxX - minX) + 1; }
-unsigned char Block::ShapeBounds::getHeight()	const { return (maxY - minY) + 1; }
+uint8_t Block::ShapeBounds::getWidth()	const { return (maxX - minX) + 1; }
+uint8_t Block::ShapeBounds::getHeight()	const { return (maxY - minY) + 1; }
 
 /*
 	Definitions

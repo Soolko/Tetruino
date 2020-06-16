@@ -18,7 +18,9 @@ namespace Tetruino
 		const Colour** blockMap;
 		
 		void addBlock(const Block& block);
-		size_t checkLines(unsigned char* lines);
+		
+		void clearLine(uint8_t line);
+		size_t checkLines(uint8_t* lines);
 		
 		bool hitBottom(const Block& block);
 	};

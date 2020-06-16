@@ -20,8 +20,8 @@ void World::addBlock(const Block& block)
 	const int blockPosY = block.y + block.offsetY;
 	
 	// Add to world map
-	for(unsigned char blockX = 0; blockX < block.size; blockX++)
-	for(unsigned char blockY = 0; blockY < block.size; blockY++)
+	for(uint8_t blockX = 0; blockX < block.size; blockX++)
+	for(uint8_t blockY = 0; blockY < block.size; blockY++)
 	{
 		if(block.shape.get(blockX + (blockY * block.size)))
 		{
@@ -41,10 +41,10 @@ size_t World::checkLines(uint8_t* lines)
 	Vector<uint8_t>* vector = nullptr;
 	size_t size = 0;
 	
-	for(unsigned char y = bounds.height - 1; y >= 0; y--)
+	for(short y = bounds.height - 1; y >= 0; y--)
 	{
-		unsigned char hitCount = 0;
-		for(unsigned char x = 0; x < bounds.width; x++)
+		uint8_t hitCount = 0;
+		for(uint8_t x = 0; x < bounds.width; x++)
 		{
 			if(blockMap[x + (y * bounds.width)] == nullptr) break;
 			else hitCount++;
@@ -82,7 +82,7 @@ size_t World::checkLines(uint8_t* lines)
 	lines = new uint8_t[size];
 	
 	uint8_t i = 0;
-	auto* current = vector;
+	Vector<uint8_t>* current = vector;
 	while(current->next != nullptr)
 	{
 		lines[i++] = current->value;
@@ -98,8 +98,8 @@ size_t World::checkLines(uint8_t* lines)
 
 bool World::hitBottom(const Block& block)
 {
-	for(short y = block.size - 1; y >= 0; y--)
-	for(unsigned char x = 0; x <= block.size; x++)
+	for(int16_t y = block.size - 1; y >= 0; y--)
+	for(uint8_t x = 0; x <= block.size; x++)
 	{
 		// This part of the block exists
 		if(block.shape.get(x + (y * block.size)))
