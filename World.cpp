@@ -36,8 +36,6 @@ void World::addBlock(const Block& block)
 
 bool World::hitBottom(const Block& block)
 {
-	const Block::ShapeBounds blockBounds = block.getBounds();
-	
 	for(short y = block.size - 1; y >= 0; y--)
 	for(unsigned char x = 0; x <= block.size; x++)
 	{
