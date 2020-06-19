@@ -19,8 +19,8 @@ namespace Tetruino
 		
 		void addBlock(const Block& block);
 		
-		void clearLine(uint8_t line);
 		size_t checkLines(uint8_t* lines);
+		void clearLine(uint8_t line);
 		
 		bool hitBottom(const Block& block);
 	};

@@ -54,7 +54,7 @@ size_t World::checkLines(uint8_t* lines)
 		// so we can exit out of the loop.
 		if(hitCount == 0) break;
 		
-		// This line is full.
+		// This line is full, add it to the vector.
 		if(hitCount == bounds.width)
 		{
 			size += 1;
@@ -94,6 +94,38 @@ size_t World::checkLines(uint8_t* lines)
 	
 	// Return
 	return size;
+}
+
+void World::clearLine(const uint8_t line)
+{
+	for(uint8_t y = line; y < bounds.height; y++)
+	{
+		// Clear instead of doing the swap,
+		// as there's nothing to swap down.
+		if(y == bounds.height - 1)
+		{
+			for(uint8_t x = 0; x < bounds.width; x++)
+			{
+				blockMap[x + (y * bounds.width)] = nullptr;
+				return;
+			}
+		}
+		
+		// Move everything down
+		uint8_t blocksHit = 0;
+		for(uint8_t x = 0; x < bounds.width; x++)
+		{
+			const uint16_t index = x + (y * bounds.width);
+			const uint16_t nextIndex = x + ((y + 1) * bounds.width);
+			
+			blockMap[index] = blockMap[nextIndex];
+			
+			if(blockMap[index] != nullptr) blocksHit++;
+		}
+		
+		// Exit if we hit a row with nothing
+		if(blocksHit == 0) return;
+	}
 }
 
 bool World::hitBottom(const Block& block)

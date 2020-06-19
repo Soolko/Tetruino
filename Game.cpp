@@ -67,7 +67,7 @@ inline void Game::clearLines()
 	uint8_t* lines;
 	uint8_t count = world.checkLines(lines);
 	
-	// Nothing to do
+	// Nothing to do, and lines isn't allocated
 	if(count == 0) return;
 	
 	for(uint8_t i = 0; i < count; i++)
@@ -78,6 +78,9 @@ inline void Game::clearLines()
 			renderer.drawPixel(x, lines[i], Colour { ColourBrightness * 2, ColourBrightness * 2, ColourBrightness * 2 });
 			delay(50);
 		}
+		
+		// Clear line
+		world.clearLine(lines[i]);
 		
 		// Reset renderer
 		render();
@@ -108,9 +111,9 @@ inline void Game::renderCurrentBlock()
 
 inline void Game::renderNextBlock()
 {
-	constexpr unsigned char brightness = ColourBrightness / 4;
+	constexpr uint8_t brightness = ColourBrightness / 4;
 	const Block::ShapeBounds shapeBounds = nextBlock->getBounds();
-	const unsigned char blockWidth = shapeBounds.maxX - shapeBounds.minX;
+	const uint8_t blockWidth = shapeBounds.maxX - shapeBounds.minX;
 	
 	renderer.drawBlock
 	(
