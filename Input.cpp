@@ -7,12 +7,17 @@ Input::Input(const KeyMap& keymap) : keymap(keymap)
 	for(size_t i = 0; i < sizeof(KeyMap); i++) pinMode(keymap.raw[i], INPUT_PULLUP);
 }
 
-#define Input_UpdateBuilder(key, downVar, pressedVar) downVar = digitalRead(key) == LOW; if(!downVar) pressedVar = false
+#define Input_UpdateBuilder(key, downVar, pressedVar) downVar = digitalRead(key) == LOW; if(!downVar) pressedVar = false;
 void Input::update()
 {
-	Input_UpdateBuilder(keymap.left, leftDown, leftPressed);		// Left
-	Input_UpdateBuilder(keymap.right, rightDown, rightPressed);		// Right
-	Input_UpdateBuilder(keymap.rotate, rotateDown, rotatePressed);	// Rotate
+	// Left
+	Input_UpdateBuilder(keymap.left, leftDown, leftPressed)
+	
+	// Right
+	Input_UpdateBuilder(keymap.right, rightDown, rightPressed)
+	
+	// Rotate
+	Input_UpdateBuilder(keymap.rotate, rotateDown, rotatePressed)
 }
 
 #define Input_CheckBuilder(downVar, pressedVar) if(downVar && !pressedVar) { pressedVar = true; return true; } else return false;
