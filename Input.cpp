@@ -4,23 +4,43 @@ using namespace Tetruino;
 
 Input::Input(const KeyMap& keymap) : keymap(keymap)
 {
+	// Initialise pins
 	for(size_t i = 0; i < sizeof(KeyMap); i++) pinMode(keymap.raw[i], INPUT_PULLUP);
 }
 
-#define Input_UpdateBuilder(key, downVar, pressedVar) downVar = digitalRead(key) == LOW; if(!downVar) pressedVar = false;
-void Input::update()
+
+/*
+	Key Updates
+ */
+
+void updateKey(const uint8_t key, bool* downVar, bool* pressedVar)
 {
-	// Left
-	Input_UpdateBuilder(keymap.left, leftDown, leftPressed)
-	
-	// Right
-	Input_UpdateBuilder(keymap.right, rightDown, rightPressed)
-	
-	// Rotate
-	Input_UpdateBuilder(keymap.rotate, rotateDown, rotatePressed)
+	*downVar = digitalRead(key) == LOW;
+	if(!*downVar) *pressedVar = false;
 }
 
-#define Input_CheckBuilder(downVar, pressedVar) if(downVar && !pressedVar) { pressedVar = true; return true; } else return false;
-bool Input::left()		{ Input_CheckBuilder(leftDown, leftPressed) }
-bool Input::right()		{ Input_CheckBuilder(rightDown, rightPressed) }
-bool Input::rotate()	{ Input_CheckBuilder(rotateDown, rotatePressed) }
+void Input::update()
+{
+	updateKey(keymap.left, &leftDown, &leftPressed);
+	updateKey(keymap.right, &rightDown, &rightPressed);
+	updateKey(keymap.rotate, &rotateDown, &rotatePressed);
+}
+
+
+/*
+	Key Checks
+ */
+
+bool checkKey(const bool downVar, bool* pressedVar)
+{
+	if(downVar && !*pressedVar)
+	{
+		*pressedVar = true;
+		return true;
+	}
+	else return false;
+}
+
+bool Input::left()		{ return checkKey(leftDown, &leftPressed); }
+bool Input::right()		{ return checkKey(rightDown, &rightPressed); }
+bool Input::rotate()	{ return checkKey(rotateDown, &rotatePressed); }
