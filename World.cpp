@@ -25,8 +25,8 @@ void World::addBlock(const Block& block)
 	{
 		if(block.shape.get(blockX + (blockY * block.size)))
 		{
-			const unsigned char collisionX = (blockPosX + blockX);
-			const unsigned char collisionY = (blockPosY + blockY);
+			const uint8_t collisionX = (blockPosX + blockX);
+			const uint8_t collisionY = (blockPosY + blockY);
 			if(collisionX > bounds.width) continue;
 			if(collisionY > bounds.height) continue;
 			
@@ -133,22 +133,66 @@ bool World::hitBottom(const Block& block)
 	for(int16_t y = block.size - 1; y >= 0; y--)
 	for(uint8_t x = 0; x <= block.size; x++)
 	{
-		// This part of the block exists
-		if(block.shape.get(x + (y * block.size)))
-		{
-			const int worldX = block.x + block.offsetX + x;
-			const int worldY = block.y + block.offsetY + y + 1;
-			const int index = worldX + (worldY * bounds.width);
-			
-			// Bounds check
-			if(worldX < 0) continue;
-			if(worldY < 0) continue;
-			if(worldX >= bounds.width) continue;
-			if(worldY >= bounds.height) return true;
-			
-			// Actual block check
-			if(blockMap[index] != nullptr) return true;
-		}
+		// If this part of the block doesn't exist, carry on until it does
+		if(!block.shape.get(x + (y * block.size))) continue;
+		
+		const int worldX = block.x + block.offsetX + x;
+		const int worldY = block.y + block.offsetY + y + 1;
+		
+		// Bounds check
+		if(worldX < 0) continue;
+		if(worldY < 0) return false;
+		if(worldX >= bounds.width) continue;
+		if(worldY >= bounds.height) return true;
+		
+		// Actual block check
+		if(blockMap[worldX + (worldY * bounds.width)] != nullptr) return true;
+	}
+	return false;
+}
+
+bool World::hitLeft(const Block& block)
+{
+	for(uint8_t x = 0; x <= block.size; x++)
+	for(uint8_t y = 0; y <= block.size; y++)
+	{
+		// If this part of the block doesn't exist, carry on until it does
+		if(!block.shape.get(x + (y * block.size))) continue;
+		
+		const int worldX = block.x + block.offsetX + x - 1;
+		const int worldY = block.y + block.offsetY + y;
+		
+		// Bounds checks
+		if(worldX < 0) return true;
+		if(worldY < 0) continue;
+		if(worldX >= bounds.width) return false;
+		if(worldY >= bounds.height) continue;
+		
+		// Block check
+		if(blockMap[worldX + (worldY * bounds.width)] != nullptr) return true;
+	}
+	return false;
+}
+
+bool World::hitRight(const Block& block)
+{
+	for(int16_t x = block.size - 1; x >= 0; x--)
+	for(uint8_t y = 0; y <= block.size; y++)
+	{
+		// If this part of the block doesn't exist, carry on until it does
+		if(!block.shape.get(x + (y * block.size))) continue;
+		
+		const int worldX = block.x + block.offsetX + x + 1;
+		const int worldY = block.y + block.offsetY + y;
+		
+		// Bounds check
+		if(worldX < 0) return false;
+		if(worldY < 0) continue;
+		if(worldX >= bounds.width) return true;
+		if(worldY >= bounds.height) continue;
+		
+		// Block check
+		if(blockMap[worldX + (worldY * bounds.width)] != nullptr) return true;
 	}
 	return false;
 }

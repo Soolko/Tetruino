@@ -23,6 +23,8 @@ namespace Tetruino
 		void clearLine(uint8_t line);
 		
 		bool hitBottom(const Block& block);
+		bool hitLeft(const Block& block);
+		bool hitRight(const Block& block);
 	};
 }
 
