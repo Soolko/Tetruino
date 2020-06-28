@@ -53,8 +53,8 @@ void Game::loop()
 	input.update();
 	
 	/* Flip these if you want to. */
-	if(input.left())	currentBlock->x--;
-	if(input.right())	currentBlock->x++;
+	if(input.left() && !world.hitLeft(*currentBlock))	currentBlock->x--;
+	if(input.right() && !world.hitRight(*currentBlock))	currentBlock->x++;
 	if(input.rotate())	currentBlock->rotateRight();
 	
 	// Always render
@@ -64,12 +64,14 @@ void Game::loop()
 inline void Game::clearLines()
 {
 	// Get the line numbers
-	uint8_t* lines;
+	uint8_t* lines = nullptr;
 	uint8_t count = world.checkLines(lines);
 	
-	// Nothing to do, and lines isn't allocated
-	if(count == 0) return;
+	// Nothing to do, and lines isn't allocated.
+	// Technically could memory leak here, but I don't see how from the world.checkLines method.
+	if(count == 0 || lines == nullptr) return;
 	
+	// Iterate through each line
 	for(uint8_t i = 0; i < count; i++)
 	{
 		// Display line

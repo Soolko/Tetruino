@@ -43,11 +43,11 @@ size_t World::checkLines(uint8_t* lines)
 	
 	for(short y = bounds.height - 1; y >= 0; y--)
 	{
+		// Count the amount of squares taken in the current line
 		uint8_t hitCount = 0;
 		for(uint8_t x = 0; x < bounds.width; x++)
 		{
-			if(blockMap[x + (y * bounds.width)] == nullptr) break;
-			else hitCount++;
+			if(blockMap[x + (y * bounds.width)] != nullptr) hitCount += 1;
 		}
 		
 		// Nothing hit, therefore there can't be anything above here,
@@ -63,7 +63,7 @@ size_t World::checkLines(uint8_t* lines)
 				// If vector not initialised, initialise it.
 				vector = new Vector<uint8_t>(y);
 			}
-			else
+			else	// Vector initialised
 			{
 				// Go to end of vector
 				auto* current = vector;
@@ -136,6 +136,7 @@ bool World::hitBottom(const Block& block)
 		// If this part of the block doesn't exist, carry on until it does
 		if(!block.shape.get(x + (y * block.size))) continue;
 		
+		// Actual position
 		const int worldX = block.x + block.offsetX + x;
 		const int worldY = block.y + block.offsetY + y + 1;
 		
@@ -159,6 +160,7 @@ bool World::hitLeft(const Block& block)
 		// If this part of the block doesn't exist, carry on until it does
 		if(!block.shape.get(x + (y * block.size))) continue;
 		
+		// Actual position
 		const int worldX = block.x + block.offsetX + x - 1;
 		const int worldY = block.y + block.offsetY + y;
 		
@@ -182,6 +184,7 @@ bool World::hitRight(const Block& block)
 		// If this part of the block doesn't exist, carry on until it does
 		if(!block.shape.get(x + (y * block.size))) continue;
 		
+		// Actual position
 		const int worldX = block.x + block.offsetX + x + 1;
 		const int worldY = block.y + block.offsetY + y;
 		
