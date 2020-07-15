@@ -3,6 +3,7 @@
 
 #include "Block.hpp"
 #include "Bounds.hpp"
+#include "Vector.hpp"
 
 #include <Arduino.h>
 
@@ -19,7 +20,7 @@ namespace Tetruino
 		
 		void addBlock(const Block& block);
 		
-		size_t checkLines(uint8_t* lines);
+		Vector<uint8_t>* checkLines();
 		void clearLine(uint8_t line);
 		
 		bool hitBottom(const Block& block);

@@ -26,8 +26,10 @@ Renderer::~Renderer()
 	delete[] buffer;
 }
 
-void Renderer::drawPixel(int x, int y, Colour colour)
+void Renderer::drawPixel(int x, int y, const Colour colour)
 {
+	if(x < 0 || x > bounds.width) return;
+	if(y < 0 || y > bounds.height) return;
 	buffer[x + (y * bounds.width)] = colour;
 }
 

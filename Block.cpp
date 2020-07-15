@@ -80,7 +80,7 @@ void Block::calculateOffset()
 	offsetX = -bounds.minX;
 	switch(yAlignment)
 	{
-	default:
+		default:
 		case YAlignment::down:
 			offsetY = size - (bounds.maxY + 1);
 			break;
@@ -98,7 +98,7 @@ uint8_t Block::ShapeBounds::getHeight()	const { return (maxY - minY) + 1; }
  */
 using YAlignment = Tetruino::Block::YAlignment;
 
-constexpr uint8_t IShapeRaw[] = { 0b00010001u, 0b00010001u };
+constexpr uint8_t IShapeRaw[] = { 0b00001111u, 0b00000000u };
 const BoolArray IShape(16, IShapeRaw);
 const Colour IColour = Colour { 0, ColourBrightness, ColourBrightness };
 const Block Blocks::I = Block(4, YAlignment::up, IShape, &IColour);

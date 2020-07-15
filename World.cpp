@@ -35,11 +35,10 @@ void World::addBlock(const Block& block)
 	}
 }
 
-size_t World::checkLines(uint8_t* lines)
+Vector<uint8_t>* World::checkLines()
 {
 	// Store the lines
 	Vector<uint8_t>* vector = nullptr;
-	size_t size = 0;
 	
 	for(short y = bounds.height - 1; y >= 0; y--)
 	{
@@ -57,7 +56,6 @@ size_t World::checkLines(uint8_t* lines)
 		// This line is full, add it to the vector.
 		if(hitCount == bounds.width)
 		{
-			size += 1;
 			if(vector == nullptr)
 			{
 				// If vector not initialised, initialise it.
@@ -75,40 +73,22 @@ size_t World::checkLines(uint8_t* lines)
 		}
 	}
 	
-	// Nothing to do here
-	if(size == 0) return 0;
-	
-	// Convert to array
-	lines = new uint8_t[size];
-	
-	uint8_t i = 0;
-	Vector<uint8_t>* current = vector;
-	while(current->next != nullptr)
-	{
-		lines[i++] = current->value;
-		current = current->next;
-	}
-	
-	// Free up
-	delete vector;
-	
-	// Return
-	return size;
+	return vector;
 }
 
 void World::clearLine(const uint8_t line)
 {
-	for(uint8_t y = line; y < bounds.height; y++)
+	for(int16_t y = line; y >= 0; y--)
 	{
 		// Clear instead of doing the swap,
 		// as there's nothing to swap down.
-		if(y == bounds.height - 1)
+		if(y == 0)
 		{
 			for(uint8_t x = 0; x < bounds.width; x++)
 			{
 				blockMap[x + (y * bounds.width)] = nullptr;
-				return;
 			}
+			return;
 		}
 		
 		// Move everything down
@@ -116,11 +96,10 @@ void World::clearLine(const uint8_t line)
 		for(uint8_t x = 0; x < bounds.width; x++)
 		{
 			const uint16_t index = x + (y * bounds.width);
-			const uint16_t nextIndex = x + ((y + 1) * bounds.width);
-			
-			blockMap[index] = blockMap[nextIndex];
+			const uint16_t nextIndex = x + ((y - 1) * bounds.width);
 			
 			if(blockMap[index] != nullptr) blocksHit++;
+			blockMap[index] = blockMap[nextIndex];
 		}
 		
 		// Exit if we hit a row with nothing
@@ -142,7 +121,7 @@ bool World::hitBottom(const Block& block)
 		
 		// Bounds check
 		if(worldX < 0) continue;
-		if(worldY < 0) return false;
+		if(worldY < 0) continue;
 		if(worldX >= bounds.width) continue;
 		if(worldY >= bounds.height) return true;
 		

@@ -64,30 +64,34 @@ void Game::loop()
 inline void Game::clearLines()
 {
 	// Get the line numbers
-	uint8_t* lines = nullptr;
-	uint8_t count = world.checkLines(lines);
+	Vector<uint8_t>* lines = world.checkLines();
 	
 	// Nothing to do, and lines isn't allocated.
 	// Technically could memory leak here, but I don't see how from the world.checkLines method.
-	if(count == 0 || lines == nullptr) return;
+	if(lines == nullptr) return;
 	
 	// Iterate through each line
-	for(uint8_t i = 0; i < count; i++)
+	auto* current = lines;
+	while(current != nullptr)
 	{
 		// Display line
 		for(uint8_t x = 0; x < world.bounds.width; x++)
 		{
-			renderer.drawPixel(x, lines[i], Colour { ColourBrightness * 2, ColourBrightness * 2, ColourBrightness * 2 });
+			renderer.drawPixel(x, current->value, Colour { ColourBrightness * 2, ColourBrightness * 2, ColourBrightness * 2 });
+			renderer.draw();
 			delay(50);
 		}
 		
 		// Clear line
-		world.clearLine(lines[i]);
+		world.clearLine(current->value);
 		
 		// Reset renderer
 		render();
+		
+		// Next
+		current = current->next;
 	}
-	delete[] lines;
+	delete lines;
 }
 
 void Game::render()
